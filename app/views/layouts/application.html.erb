@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= page_title %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <link rel="icon" href="/favicon.ico">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+</head>
+
+<body class="<%= body_class %>">
+  <%= render "application/header" %>
+  <%= render "application/flash_messages" %>
+<main>
+  <div class="sm:ml-64">
+    <div class="dark:border-gray-700">
+      <%= yield %>
+    </div>
+  </div>
+</main>
+<%#= render"application/footer" %>
+<%#= render "application/remote_modal" %>
+<div id="loading-spinner" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+</div>
+<script>
+    document.addEventListener("turbo:load", () => {
+        const spinner = document.getElementById("loading-spinner");
+
+        document.addEventListener("turbo:before-fetch-request", () => {
+            spinner.classList.remove("hidden");
+        });
+
+        document.addEventListener("turbo:before-fetch-response", () => {
+            spinner.classList.add("hidden");
+
+        });
+        document.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                document.getElementById("loading-spinner").classList.add("hidden");
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+# Ignore compiled assets and node_modules
+/app/assets/builds/*
+!/app/assets/builds/.keep
+/public/assets
+/node_modules
+
+# Ignore ENV files
+.env
+.idea/misc.xml
+.idea/modules.xml
+.idea/rails-ralix-tailwind.iml
+.idea/vcs.xml
+yarn-error.log
+.DS_Store
+/.idea
+/tmp
+/tmp/
+*.log
+*.log
+1.html
+1.txt
+2.html
+2.txt
+3.html
+3.txt
+clean_html.zip
+contenido_limpio_2.txt
+contenido_limpio_final.txt
+contenido_limpio_final_page3.txt
+contenido_limpio_final_v3.txt
+contenido_limpio_final_v4.txt
+contenido_limpio_final_v5.txt
+contenido_limpio_final_v6.txt
+contenido_sanitizado.txt
+contenido_sanitizado2.txt
+limpiar.rb
+sanitaizer.rb
+pagina.html
+log/development.log
+log/development.log
+selenium.rb
+log/development.log
+log/development.log
+log/development.log

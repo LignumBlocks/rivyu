@@ -1,0 +1,28 @@
+<div class="relative overflow-x-auto mb-8 bg-white">
+  <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
+    <div class="py-5">
+      <% breadcrumbs = [["Channels", channels_path], [@channel.name, ""]]%>
+      <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
+    </div>
+    <div class="mr-2">
+      <%= search_form_for @q, url: channel_path, method: :get, class: "inline-form" do |f| %>
+        <div class="flex items-center space-x-4">
+          <div class="flex-1">
+            <%= f.select :state_eq, Video.states { |state| [state.key, ""] }, { include_blank: "All states"}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+          <div class="flex-1">
+            <%= f.select :hack_hack_validation_status_eq, [["Yes", true], ["No", false]].each { |state| [state[0], state[1]] }, { include_blank: "Valid hacks"}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+          <div class="flex-1">
+            <%= f.select :hack_is_hack_eq, [["Yes", true], ["No", false]].each { |state| [state[0], state[1]] }, { include_blank: "Possible hacks"}, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= f.submit :search, class: "btn btn-primary mt-2" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= render partial: "videos_section", locals: {videos: @videos, pagy: @pagy} %>
+</div>

@@ -1,0 +1,48 @@
+<div class="p-6 pt-4 w-3/4">
+  <p class="font-bold">Title</p>
+  <p>
+    <span><%= hack.title %>
+      <span class="<%= class_for_boolean(hack.hack_validation.present? ? hack.hack_validation.status : hack.is_hack?) %> inline-block ml-2"><%= text_for_boolean(hack.hack_validation.present? ? hack.hack_validation.status : hack.is_hack?) %></span>
+    </span>
+  </p>
+
+  <p class="font-bold mt-4">Summary</p>
+  <p><%= raw(@markdown.render(hack.summary)) if hack.summary%></p>
+
+  <p class="font-bold mt-4">Justification</p>
+  <p><%= raw(@markdown.render(hack.justification)) if hack.justification %></p>
+
+  <p class="font-bold mt-4">Video Transcription</p>
+  <p><%= raw(@markdown.render(hack.video.transcription.content)) %></p>
+  <a href="<%= hack.video.source_link %>" target="_blank" class="text-blue-600 dark:text-blue-500 hover:underline">Ver video</a>
+
+  <% if hack.is_hack? %>
+    <p class="font-bold mt-4">Queries</p>
+    <ul class="pl-4">
+      <% hack.queries.each do |query| %>
+        <li><%= query.content.capitalize %></li>
+      <% end %>
+    </ul>
+
+    <p class="font-bold mt-4">Validation Sources</p>
+    <ul class="pl-4">
+      <% validation_links = hack.hack_validation&.links%>
+      <% validation_links ||= "[]" %>
+      <% validation_links = JSON.parse(validation_links) %>
+      <% validation_links.each do |link| %>
+        <li>
+          <a href="<%= link %>" target="_blank" class=" dark:text-blue-500 hover:underline"><%= link %></a>
+        </li>
+      <% end %>
+    </ul>
+
+    <p class="font-bold mt-4">Scraped Sources</p>
+    <ul class="pl-4">
+      <% hack.scraped_results.each do |scraped_result| %>
+        <li>
+          <a href="<%= scraped_result.link %>" target="_blank" class=" dark:text-blue-500 hover:underline"><%= scraped_result.link %></a>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

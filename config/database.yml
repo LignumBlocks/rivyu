@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("DB_POOl", 15).to_i  %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("DATABASE_NAME", "hintsly_development")  %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("DATABASE_NAME", "hintsly_test")  %>
+
+production:
+  <<: *default
+  database: hintsly_production
+  username: hintsly
+  password: <%= ENV["HINTSLY_DATABASE_PASSWORD"] %>
