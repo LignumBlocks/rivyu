@@ -1,5 +1,4 @@
 class Category < ApplicationRecord
-  belongs_to :clasification
-  has_many :hack_category_rels
-  has_many :hacks, through: :hack_category_rels
+  belongs_to :classification
+  has_and_belongs_to_many :hacks, join_table: :hack_categories
 end

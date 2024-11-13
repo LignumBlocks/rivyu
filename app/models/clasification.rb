@@ -1,2 +1,0 @@
-class Clasification < ApplicationRecord
-end

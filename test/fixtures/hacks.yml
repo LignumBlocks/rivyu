@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_article: one
+  title: MyString
+  summary: MyText
+  justification: MyText
+  free_description: MyText
+  premium_description: MyText
+  steps_summary: MyText
+  resources_needed: MyText
+  expected_benefits: MyText
+  extended_title: MyString
+  detailed_steps: MyText
+  additional_tools_resources: MyText
+  case_study: MyText
+
+two:
+  id_article: two
+  title: MyString
+  summary: MyText
+  justification: MyText
+  free_description: MyText
+  premium_description: MyText
+  steps_summary: MyText
+  resources_needed: MyText
+  expected_benefits: MyText
+  extended_title: MyString
+  detailed_steps: MyText
+  additional_tools_resources: MyText
+  case_study: MyText
