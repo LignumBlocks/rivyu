@@ -1,10 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  get 'prompts/index'
-  get 'prompts/show'
-  get 'prompts/new'
-  get 'prompts/edit'
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
@@ -16,20 +12,7 @@ Rails.application.routes.draw do
   resource :user, only: %i[edit update destroy]
 
   resources :sources
-  resources :prompts
   resources :articles
-
-  resources :channels, only: %i[index create update show edit] do
-    collection do
-      post :apify_webhook
-    end
-  end
-  resource :channel do
-    member do
-      post :process_videos
-      post :process_videos_test
-    end
-  end
 
   resources :hacks, only: [:index]
   resource :hack, only: [:show] do
@@ -37,8 +20,6 @@ Rails.application.routes.draw do
       get :download_pdf
     end
   end
-
-  resources :hack_structured_infos
 
   get '/pages/:page' => 'pages#show', as: :page
 
