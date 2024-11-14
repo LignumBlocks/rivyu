@@ -15,8 +15,9 @@ Rails.application.routes.draw do
 
   resource :user, only: %i[edit update destroy]
 
-  resources :validation_sources
+  resources :sources
   resources :prompts
+  resources :articles
 
   resources :channels, only: %i[index create update show edit] do
     collection do

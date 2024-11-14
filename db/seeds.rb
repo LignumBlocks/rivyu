@@ -70,19 +70,19 @@ Write it like a Medium post abount financial strategies.\n\nThe format should fo
   { name: 'Structured FREE description', code: 'STRUCTURED_FREE_DESCRIPTION', prompt: "Your task is to structure the provided analysis into a json dictionary.\n\nHack analysis:\n[{analysis}]\n---\n
 Maintain the markdown text style inside the JSON. Below is a guide for the expected JSON object, if in the text a field is missing fill it as null.\n
 Expected JSON structure:\n{\n    \"Hack Title\": \"<title>\",\n    \"Description\": \"<description>\",\n    \"Main Goal\": \"<goal or purpose>\",\n    \"steps(Summary)\": <steps>,
-    \"Resources Needed\": <resources>,    \"Expected Benefits\": <benefits>\n}\n
+    \"Resources Needed\": <sources>,    \"Expected Benefits\": <benefits>\n}\n
 Don't add or remove words. Nothing should be in list format, only string. Provide your response only as a JSON object containing the structured information provided.", system_prompt: 'You are an expert at text processing, in particular, financial related information.' },
 
   { name: 'Structured PREMIUM description', code: 'STRUCTURED_PREMIUM_DESCRIPTION', prompt: "Your task is to structure the provided analysis into a json dictionary.\n\nHack analysis:\n[{analysis}]\n---\n
 Maintain the markdown text style inside the JSON. Below is a guide for the expected JSON object, if in the text a field is missing fill it as null.\n
 Expected JSON structure:\n{\n    \"Extended Title\": \"<extended title>\",
-    \"Detailed steps\": <steps>,\n    \"Additional Tools and Resources\": <resources>,\n    \"Case Study\": \"<case study>\"\n}\n
+    \"Detailed steps\": <steps>,\n    \"Additional Tools and Resources\": <sources>,\n    \"Case Study\": \"<case study>\"\n}\n
 Don't add or remove words. Nothing should be in list format, only string. Provide your response only as a JSON object containing the structured information provided.", system_prompt: 'You are an expert at text processing, in particular, financial related information.' },
 
   { name: 'Complexity Classification', code: 'COMPLEXITY_CLASSIFICATION', prompt: "Classify the financial hack into one of the following categories, based on its complexity, accessibility, and level of financial impact:\n
 1. *Accessible*:\n   - *Description*: Simple hacks that are easy to implement by most people without requiring extensive financial knowledge or initial investment. Designed for users with any level of income and experience.\n   - *Examples*: Saving small amounts regularly, reducing non-essential expenses.\n
 2. *Intermediate*:\n   - *Description*: Hacks that require some planning, basic financial knowledge, or a moderate initial investment. Useful for people with medium incomes or some experience in managing their money.\n   - *Examples*: Investing while carrying debt, simple retirement planning strategies.\n
-3. *Advanced*:\n   - *Description*: More complex hacks requiring advanced financial knowledge or considerable resources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures.\n   - *Examples*: Utilizing REITs and advanced tax strategies to maximize returns.\n
+3. *Advanced*:\n   - *Description*: More complex hacks requiring advanced financial knowledge or considerable sources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures.\n   - *Examples*: Utilizing REITs and advanced tax strategies to maximize returns.\n
 ## Financial hack:\n---\n[{hack_description}]\n---\n
 Provide your response only as a JSON object with the values as plain strings, no markdown; in the following format:\n```json\n
 {\n    \"category\": \"<Accessible, Intermediate or Advanced>\",\n    \"explanation\": \"<A short explanation regarding the classification>\",\n}\n```", system_prompt: 'You are a financial analyst specialized in financial hacks for users in the USA.' },
@@ -92,7 +92,7 @@ Provide your response only as a JSON object with the values as plain strings, no
 - `Corporate Finance`: financial activities of corporations, including investment decisions, financial management, and capital structure.
 - `Investment Management`: strategies and practices of managing financial assets to maximize returns.
 - `Personal Finance`: management of individual or household financial activities, including budgeting, saving, and investing.
-- `Financial Markets`:  facilitate the trading of financial instruments and play a key role in the allocation of resources. Including stock market, bond market and derivative market.
+- `Financial Markets`:  facilitate the trading of financial instruments and play a key role in the allocation of sources. Including stock market, bond market and derivative market.
 - `Public Finance`: studies the role of the government in the economy, including taxation, spending, and debt management.
 - `Banking and Financial Institutions`: examines banking systems and financial institutions that provide financial services to individuals and businesses.
 - `Risk Management`: identifies, assesses, and prioritizes risks followed by coordinated efforts to minimize or control their impact.
@@ -185,7 +185,7 @@ Category.create([
                   { name: 'Personal Finance',
                     description: 'Management of individual or household financial activities, including budgeting, saving, and investing.', clasification: financial_classification },
                   { name: 'Financial Markets',
-                    description: 'Facilitate the trading of financial instruments and play a key role in the allocation of resources. Including stock market, bond market, and derivative market.', clasification: financial_classification },
+                    description: 'Facilitate the trading of financial instruments and play a key role in the allocation of sources. Including stock market, bond market, and derivative market.', clasification: financial_classification },
                   { name: 'Public Finance',
                     description: 'Studies the role of the government in the economy, including taxation, spending, and debt management.', clasification: financial_classification },
                   { name: 'Banking and Financial Institutions',
@@ -209,5 +209,5 @@ Category.create([
                   { name: 'Intermediate',
                     description: 'Hacks that require some planning, basic financial knowledge, or a moderate initial investment. Useful for people with medium incomes or some experience in managing their money. Examples: Investing while carrying debt, simple retirement planning strategies.', clasification: complexity_classification },
                   { name: 'Advanced',
-                    description: 'More complex hacks requiring advanced financial knowledge or considerable resources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures. Examples: Utilizing REITs and advanced tax strategies to maximize returns.', clasification: complexity_classification }
+                    description: 'More complex hacks requiring advanced financial knowledge or considerable sources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures. Examples: Utilizing REITs and advanced tax strategies to maximize returns.', clasification: complexity_classification }
                 ])

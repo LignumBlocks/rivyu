@@ -1,12 +1,8 @@
 <div class="relative overflow-x-auto mb-8">
   <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class=" flex gap-4">
-      <% breadcrumbs = [["Validation Sources", validation_sources_path]] %>
+      <% breadcrumbs = [["Sources", sources_path]] %>
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
-      <div >
-        <%= link_to 'New Validation Source', new_validation_source_path, data: { turbo_frame: "modal-content", turbo_method: :get, modal_toggle: "modal" }, class: "btn btn-primary" %>
-
-      </div>
     </div>
     <div class="flex items-center justify-end flex-column flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
       <div class="mr-4 mt-2">
@@ -38,7 +34,7 @@
         Name
       </th>
       <th scope="col" class="px-4 py-3">
-        URL Query
+        URL
       </th>
       <th scope="col" class="px-6 py-3 text-center">
         Actions
@@ -46,8 +42,8 @@
     </tr>
     </thead>
     <tbody id="validation_sources">
-    <% @validation_sources.each do |source| %>
-      <%= render partial: 'validation_source', locals: { source: source } %>
+    <% @sources.each do |source| %>
+      <%= render partial: 'source', locals: { source: source } %>
     <% end %>
     </tbody>
   </table>
@@ -57,30 +53,19 @@
     </span>
     <ul class="pt-2 inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 list-none">
       <li>
-        <%= link_to 'Previous', validation_sources_path(page: @pagy.prev), { disabled: @pagy.prev.blank?, class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        <%= link_to 'Previous', sources_path(page: @pagy.prev), { disabled: @pagy.prev.blank?, class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
       </li>
       <% @pagy.pages.times do |page| %>
         <li>
-          <%= link_to "#{page + 1}", validation_sources_path(page: page + 1), { class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"} %>
+          <%= link_to "#{page + 1}", sources_path(page: page + 1), { class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"} %>
         </li>
       <% end %>
       <li>
-        <%= link_to 'Next', validation_sources_path(page: @pagy.next), { disabled: @pagy.next.blank?, class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        <%= link_to 'Next', sources_path(page: @pagy.next), { disabled: @pagy.next.blank?, class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
       </li>
     </ul>
   </nav>
 </div>
-
-<div id="modal" style="z-index: 9999;" class="fixed inset-0 flex items-center justify-center hidden bg-gray-600 bg-opacity-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg overflow-auto">
-
-
-    <turbo-frame id="modal-content">
-      <!-- Se cargará el contenido dinámico aquí -->
-    </turbo-frame>
-  </div>
-</div>
-
 
 <script>
     function clearSearch() {
@@ -103,6 +88,4 @@
             modal.classList.remove("hidden");
         }
     });
-
-
 </script>

@@ -1,7 +1,7 @@
 <div class="relative overflow-x-auto mb-8">
   <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class="">
-      <% breadcrumbs = [["Validation Sources", validation_sources_path]] %>
+      <% breadcrumbs = [["Validation Sources", sources_path]] %>
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
     </div>
     <div class="flex items-center justify-end flex-column flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="mr-2">
-        <%= link_to 'New Validation Source', new_validation_source_path, data: { turbo_frame: "modal-content", turbo_method: :get, modal_toggle: "modal" }, class: "btn btn-primary" %>
+        <%= link_to 'New Validation Source', new_source_path, data: { turbo_frame: "modal-content", turbo_method: :get, modal_toggle: "modal" }, class: "btn btn-primary" %>
 
       </div>
     </div>
@@ -62,9 +62,9 @@
 
         <td class="px-4 py-4 text-center space-x-2">
           <!-- Editar botón -->
-          <%= link_to 'Edit', edit_validation_source_path(source), data: { turbo_frame: "modal-content", turbo_method: :get, modal_toggle: "modal" }, class: "inline-block " %>
+          <%= link_to 'Edit', edit_source_path(source), data: { turbo_frame: "modal-content", turbo_method: :get, modal_toggle: "modal" }, class: "inline-block " %>
           <!-- Eliminar botón -->
-          <%= button_to 'Delete', validation_source_path(source), method: :delete,
+          <%= button_to 'Delete', source_path(source), method: :delete,
                         data: { controller: 'confirmation', confirmation_message_value: 'Are you sure?', action: 'click->confirmation#confirm' },
                         class: "btn btn-danger" %>
         </td>
@@ -79,15 +79,15 @@
     </span>
     <ul class="pt-2 inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 list-none">
       <li>
-        <%= link_to 'Previous', validation_sources_path(page: @pagy.prev), { disabled: @pagy.prev.blank?, class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        <%= link_to 'Previous', sources_path(page: @pagy.prev), { disabled: @pagy.prev.blank?, class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
       </li>
       <% @pagy.pages.times do |page| %>
         <li>
-          <%= link_to "#{page + 1}", validation_sources_path(page: page + 1), { class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"} %>
+          <%= link_to "#{page + 1}", sources_path(page: page + 1), { class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"} %>
         </li>
       <% end %>
       <li>
-        <%= link_to 'Next', validation_sources_path(page: @pagy.next), { disabled: @pagy.next.blank?, class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        <%= link_to 'Next', sources_path(page: @pagy.next), { disabled: @pagy.next.blank?, class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
       </li>
     </ul>
   </nav>
