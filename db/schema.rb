@@ -88,7 +88,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_15_173809) do
     t.text "steps_summary"
     t.text "resources_needed"
     t.text "expected_benefits"
-    t.string "extended_title"
     t.text "detailed_steps"
     t.text "additional_tools_resources"
     t.text "case_study"
@@ -98,7 +97,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_15_173809) do
     t.string "free_title"
     t.string "premium_title"
     t.text "description"
-    t.string "main_gold"
+    t.string "main_goal"
     t.index ["article_id"], name: "index_hacks_on_article_id"
   end
 
