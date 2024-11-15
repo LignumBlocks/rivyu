@@ -16,7 +16,7 @@
 @import 'components/overrides.css';
 
 .bg-hintsly{
-    background-color: #ff8c00;
+    background-color: #05b7a9;
 }
 
 .btn-danger {
@@ -24,17 +24,17 @@
 }
 
 .btn-success {
-    @apply bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
+    @apply bg-hintsly hover:bg-green-800 dark:bg-green-600 dark:hover:bg-green-700;
 }
 
 .btn-primary{
-    @apply bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+    @apply bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700
 }
 
 .btn {
-    @apply text-white focus:outline-none focus:ring-4 font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2;
+    @apply text-white focus:outline-none font-medium rounded-md text-sm px-5 py-2.5 text-center me-2 mb-2;
 }
 
 .btn-sm {
-    @apply px-3 py-2 text-sm text-center text-white rounded-lg focus:ring-4 focus:outline-none rounded-md
+    @apply px-3 py-2 text-sm text-center text-white rounded-lg focus:outline-none rounded-md
 }

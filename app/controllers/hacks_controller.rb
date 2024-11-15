@@ -2,21 +2,8 @@ require 'open-uri'
 
 class HacksController < ApplicationController
   def index
-    @channels = current_user.channels.all
-    hack_filter = params[:filter] || 'valid'
-
-    @q = current_user.hacks.ransack(params[:q])
-
-    params[:q]&.delete(:video_channel_id_eq) if params.dig(:q, :video_channel_id_eq).blank?
-
-    case hack_filter
-    when 'valid'
-      @q = valid_hacks_ransack(params[:q])
-    when 'not_valid'
-      @q = not_valid_hacks_ransack(params[:q])
-    end
-
-    @pagy, @hacks = pagy(@q.result.reorder(created_at: :desc), items: 50, size: [1, 3, 3, 1])
+    @q = Hack.ransack(params[:q])
+    @pagy, @hacks = pagy(@q.result.order(created_at: :desc), items: 50, size: [1, 3, 3, 1])
   end
 
   def show

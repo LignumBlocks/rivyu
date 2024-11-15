@@ -1,161 +1,83 @@
-<div class="relative overflow-x-auto mb-8">
+<div class="relative overflow-x-auto mb-8 ">
   <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class="">
       <% breadcrumbs = [["Hacks", hacks_path]]%>
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
     </div>
     <div class="flex items-center justify-end flex-column flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
-      <div class="mr-4 mt-2">
-            <%= search_form_for @q, data: { turbo_frame: "search" } do |f| %>
-              <label for="simple-search" class="sr-only">Search</label>
+      <div class="mr-4 mt-2 p-8">
+
+      </div>   
+    </div>
+  </div>
+
+  <div class="p-6">
+    <div>
+      <%= search_form_for @q, url: hacks_path, method: :get do |f| %>
+        <div class="grid grid-cols-4 gap-4">
+          <div class="">
+            <div class="">
               <div class="relative w-full">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <%= f.text_field :title_or_summary_or_video_channel_name_cont,
-                                class: "block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
-                                placeholder: "Search ..." %>
-
-                <button type="button" onclick="clearSearch()" class="absolute inset-y-0 right-0 flex items-center p-0 m-0 mr-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                <%= f.text_field :title_or_summary_cont,
+                                 class: "block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
+                                 placeholder: "Search ..." %>
               </div>
-
-            <% end %>
-      </div>   
-    </div>
-  </div>
-  <style>
-    .underline {
-      text-decoration: underline;
-      font-weight: bold;
-    }
-
-    .subsubsub{
-      list-style: none;
-      margin: 40px 0 0;
-      font-size: 13px;
-      padding: 0;
-      float: left;
-      color: #646970;
-    }
-
-    .subsubsub li {
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-      white-space: nowrap;
-    }
-    table {
-      border: 1px solid #c3c4c7;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
-    }
-    
-    .container.wrap{
-      padding: 0 20px;
-      background-color: #f0f0f1;
-    }
-
-    .tablenav.top{
-      clear: both;
-      padding: 20px 0px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-  </style>
-  <div class="container wrap" style="max-width: 100%;">
-      <ul class="subsubsub">
-        <li class="">          
-          <%= link_to "All (#{current_user.channels.joins(:hacks).count})", hacks_path(filter: 'all'), class: "text-blue-500 #{'underline' if params[:filter] == 'all' }" %> |
-        </li>
-        <li>
-          <%= link_to "Valid (#{current_user.channels.joins(:hacks).merge(Hack.is_valid).count})", hacks_path(filter: 'valid'), class: "text-blue-500 #{'underline' if params[:filter].nil? || params[:filter] == 'valid'}" %> |
-        </li>
-        <li>
-          <%= link_to "Not-valid (#{current_user.channels.joins(:hacks).merge(Hack.not_valid).count})", hacks_path(filter: 'not_valid'), class: "text-blue-500 #{'underline' if params[:filter] == 'not_valid'}" %> |
-        </li>
-        <li>
-          <%= link_to "Channels (#{@channels.count})", channels_path, class: "text-blue-500" %>
-        </li>        
-      </ul>  
-    <div class="tablenav top">
-      <%= search_form_for @q, url: hacks_path, method: :get, local: true do |f| %>
-        <div class="grid grid-cols-3 gap-4">
-          <!-- Campos ocultos para el filtro y la paginación -->
-          <%= hidden_field_tag :filter, params[:filter] %>
-          <%= hidden_field_tag :page, 1 %>
-
-          <!-- Primera columna -->
-          <div class="">
-            <!-- Campo de búsqueda -->
-            <div>
-              <%= f.text_field :title_or_summary_or_video_channel_name_cont,
-                               class: "block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
-                               placeholder: "Search ..." %>
             </div>
-
-            <!-- Filtro por canal -->
-            <div class="">
-              <%= f.select :video_channel_id_eq,
-                           options_for_select([["Select Channel", ""]] + @channels.map { |channel| [channel.name, channel.id] }, params.dig(:q, :video_channel_id_eq)),
-                           {},
-                           class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+            <div>
+              <%= f.select :source_id_eq,
+                           options_for_select(Source.pluck(:name, :id)),
+                           { include_blank: "All Sources" },
+                           class: "block bg-gray-50 mt-2 border border-gray-300 text-gray-500 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
           </div>
 
-          <!-- Segunda columna -->
-          <div class="flex flex-col gap-4">
-            <!-- Filtro por clasificación -->
-            <div>
-              <%= f.select :clasifications_id_eq,
-                           options_for_select(Clasification.pluck(:name, :id)),
-                           { include_blank: "All Classifications" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+          <div date-rangepicker class="">
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+              </div>
+              <input id="datepicker-range-end" autocomplete="false" name="q[created_at_lteq]" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select start date">
             </div>
 
-            <!-- Filtro por categoría -->
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+              </div>
+              <input id="datepicker-range-end" autocomplete="false" name="q[created_at_lteq]" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select end date">
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
             <div>
-              <%= f.select :hack_category_rels_category_id_eq,
+              <%= f.select :hack_categories_category_classification_id_eq,
+                           options_for_select(Classification.pluck(:name, :id)),
+                           { include_blank: "All Classifications" },
+                           class: "bg-gray-50 mt-2 border border-gray-300 text-gray-500 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+            </div>
+            <div>
+              <%= f.select :hack_categories_category_id_eq,
                            options_for_select(Category.pluck(:name, :id)),
                            { include_blank: "All Categories" },
-                           class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+                           class: "bg-gray-50 text-gray-500 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
           </div>
 
-          <!-- Tercera columna con el selector de rango de fechas -->
-          <div date-rangepicker>
-
-          
-
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                </svg>
-              </div>
-              <input id="datepicker-range-end" name="q[created_at_lteq]" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
-            </div>
-
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                </svg>
-              </div>
-              <input id="datepicker-range-end" name="q[created_at_lteq]" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date end">
-            </div>
+          <div class="mt-2">
+            <%= f.submit "Apply filters", class: "btn-sm btn-success text-white text-sm rounded" %>
           </div>
 
 
           <!-- Botón de filtro -->
-          <div class="col-span-3">
-            <%= f.submit "Filter", class: "btn btn-success text-white bg-green-500 hover:bg-green-600 text-sm rounded" %>
-          </div>
+
         </div>
 
     <% end %>
@@ -196,10 +118,8 @@
       </nav>
 
     </div>
-
-
     <div class="table-container">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <table class="mt-2 w-full border border-gray-200 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
         <th scope="col" class="px-6 py-3">
@@ -208,12 +128,9 @@
         <th scope="col" class="px-6 py-3 text-center">
           Actions
         </th>
-        <th scope="col" class="px-6 py-3 text-center">
-          Valid
-        </th>
 
         <th scope="col" class="px-6 py-3 text-center">
-          Channel
+          Source
         </th>
         <th scope="col" class="px-6 py-3 text-center">
           Created at
@@ -234,15 +151,13 @@
               <%= link_to "View hack", hack_path(id: hack), class: "" %>
             </div>
           </td>
-          <td class="px-4 py-4 text-center w-32">
-            <span class="<%= class_for_boolean(hack.hack_structured_info.present? && hack.hack_validation&.status == true) %> inline-block"><%= text_for_boolean(hack.hack_structured_info.present? && hack.hack_validation&.status == true) %></span>
-          </td>
+
           <td class="px-4 py-4 text-center w-32">
             <div class="bg-gray-50 rounded-full p-1 whitespace-nowrap">
-              <a href="<%= channel_path(hack.video.channel) %>" class="text-center text-sm text-gray-600"><%= hack.video.channel.name %></a>
+              <a href="<%= source_path(hack.source) %>" class="text-center text-sm text-gray-600"><%= hack.source.name %></a>
             </div>
           </td>
-          <td>
+          <td class="px-4 py-4 text-center w-32">
             <%= hack.created_at&.strftime("%Y/%m/%d") %>
           </td>          
         </tr>      
@@ -250,37 +165,27 @@
       </tbody>
     </table>
     </div>
+
+    <nav class="flex p-2 pl-6 px-4 items-end flex-column flex-wrap md:flex-row justify-between" aria-label="Table navigation">
+    <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+      Showing <span class="font-semibold text-gray-900 dark:text-white"><%= @pagy.from %>-<%= @pagy.to %></span> of <span class="font-semibold text-gray-900 dark:text-white"><%= @pagy.count %></span>
+    </span>
+      <ul class="pt-2 inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 list-none">
+        <li>
+          <%= link_to 'Previous', hacks_path(page: @pagy.prev), { disabled: @pagy.prev.blank?, class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        </li>
+        <% @pagy.pages.times do |page| %>
+          <li>
+            <%= link_to "#{page + 1}", hacks_path(page: page + 1), { class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"} %>
+          </li>
+        <% end %>
+        <li>
+          <%= link_to 'Next', hacks_path(page: @pagy.next), { disabled: @pagy.next.blank?, class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" } %>
+        </li>
+      </ul>
+    </nav>
+  </div>
     
-  <nav class="flex p-2 pl-6 px-4 items-center flex-column flex-wrap md:flex-row justify-between" aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-          <%= t("helpers.page.showing") %> <span class="font-semibold text-gray-900 dark:text-white"><%= "#{@pagy.from}-#{@pagy.to}" %></span> <%= t("helpers.page.of") %> <span class="font-semibold text-gray-900 dark:text-white"><%= @pagy.count %></span></span>
-        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 list-none">
-          <li>
-            <%= link_to t("helpers.page.previous"), hacks_path(params.to_unsafe_h.merge(page: @pagy.prev)), 
-              { 
-                disabled: @pagy.prev.blank?, 
-                class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              } %>
-          </li>
-          <% @pagy.series.each do |page| %>
-            <li>
-              <% if page.is_a?(Integer) %>
-                <%= link_to page.to_s, hacks_path(params.to_unsafe_h.merge(page: page)), 
-                  class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" %>
-              <% else %>
-                <span class="flex items-center justify-center px-3 h-8 text-gray-500">...</span>
-              <% end %>
-            </li>
-          <% end %>
-          <li>
-            <%= link_to t("helpers.page.next"), hacks_path(params.to_unsafe_h.merge(page: @pagy.next)), 
-              { 
-                disabled: @pagy.next.blank?, 
-                class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" 
-              } %>
-          </li>
-        </ul>
-  </nav>
 </div>
 </div>
 
