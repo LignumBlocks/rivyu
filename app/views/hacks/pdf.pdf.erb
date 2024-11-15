@@ -238,7 +238,7 @@
 <div class="p-6 pt-4">
   <p class="font-bold">Title</p>
   <p>
-    <span><%= @hack.title %>
+    <span><%= @hack.premium_title %>
       <span class="<%= class_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %> inline-block ml-2"><%= text_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %></span>
     </span>
   </p>
