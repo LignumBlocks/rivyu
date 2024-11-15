@@ -18,7 +18,7 @@ end
 
 # Crear hacks con un artículo asociado
 NUM_HACKS = 10
-NUM_HACKS.times do
+hacks = NUM_HACKS.times.map do
   Hack.create!(
     article_id: articles.sample.id, # Asocia un artículo aleatorio
     summary: Faker::Lorem.sentence,
@@ -39,4 +39,24 @@ NUM_HACKS.times do
   )
 end
 
-puts "#{NUM_ARTICLES} Articles y #{NUM_HACKS} Hacks creados con datos dummy."
+# Verificar que haya categorías en la tabla 'categories'
+categories = Category.all
+if categories.empty?
+  puts "No hay registros en la tabla 'categories'. Creando categorías dummy..."
+  NUM_CATEGORIES = 5
+  categories = NUM_CATEGORIES.times.map do
+    Category.create!(name: Faker::Lorem.word)
+  end
+end
+
+# Crear relaciones entre hacks y categorías (hack_categories)
+NUM_HACK_CATEGORIES = 20
+NUM_HACK_CATEGORIES.times do
+  HackCategory.create!(
+    category_id: categories.sample.id, # Asocia una categoría aleatoria
+    hack_id: hacks.sample.id, # Asocia un hack aleatorio
+    justification: Faker::Lorem.paragraph
+  )
+end
+
+puts "#{NUM_ARTICLES} Articles, #{NUM_HACKS} Hacks y #{NUM_HACK_CATEGORIES} HackCategories creados con datos dummy."
