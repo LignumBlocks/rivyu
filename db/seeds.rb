@@ -57,3 +57,5 @@ Category.create([
                   { name: 'Advanced',
                     description: 'More complex hacks requiring advanced financial knowledge or considerable sources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures. Examples: Utilizing REITs and advanced tax strategies to maximize returns.', classification: complexity_classification }
                 ])
+
+load(Rails.root.join('db/seeds/development/hacks.rb')) if Rails.env.development?
