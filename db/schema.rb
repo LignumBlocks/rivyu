@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_13_173727) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_15_173809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_13_173727) do
     t.json "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "are_hacks"
+    t.text "justification"
+    t.text "content_summary"
     t.index ["source_id"], name: "index_articles_on_source_id"
   end
 
@@ -80,11 +83,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_13_173727) do
 
   create_table "hacks", force: :cascade do |t|
     t.bigint "article_id", null: false
-    t.string "title"
     t.text "summary"
     t.text "justification"
-    t.text "free_description"
-    t.text "premium_description"
     t.text "steps_summary"
     t.text "resources_needed"
     t.text "expected_benefits"
@@ -94,6 +94,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_13_173727) do
     t.text "case_study"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "init_title"
+    t.string "free_title"
+    t.string "premium_title"
+    t.text "description"
+    t.string "main_gold"
     t.index ["article_id"], name: "index_hacks_on_article_id"
   end
 
