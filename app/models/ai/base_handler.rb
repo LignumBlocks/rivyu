@@ -3,19 +3,15 @@ module Ai
     OPENAI_API_KEY = ENV['OPENAI_API_KEY']
     GOOGLE_API_KEYS = ENV.fetch('GOOGLE_API_KEYS', '')
 
-    MODELS = %w[gpt-4o-mini gpt-3.5-turbo gemini-1.5-flash gemini-1.5-flash-8b].freeze
+    MODELS = %w[gemini-1.5-flash gemini-1.5-flash-8b].freeze
 
     DEFAULT_SYSTEM_PROMPT = 'You are a helpful assistant. Answer all questions to the best of your ability.'.freeze
 
-    def initialize(model_name = 'gemini-1.5-flash-8b', temperature = 0.7)
-      @model_name = MODELS.include?(model_name) ? model_name : MODELS[0]
+    def initialize(model_name = 'gemini-1.5-flash-8b', temperature = 0.5)
+      @model_name = MODELS.include?(model_name) ? model_name : MODELS[1]
       @temperature = temperature
 
-      @llm = if @model_name.include?('gpt')
-               load_openai
-             else
-               load_gemini
-             end
+      @llm = load_gemini
     end
 
     def load_openai
