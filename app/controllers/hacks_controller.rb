@@ -3,7 +3,7 @@ require 'open-uri'
 class HacksController < ApplicationController
   def index
     @q = Hack.ransack(params[:q])
-    @pagy, @hacks = pagy(@q.result.order(created_at: :desc), items: 50, size: [1, 3, 3, 1])
+    @pagy, @hacks = pagy(@q.result.distinct.order(created_at: :desc), items: 50, size: [1, 3, 3, 1])
   end
 
   def show
