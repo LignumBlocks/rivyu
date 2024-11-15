@@ -6,6 +6,8 @@ module Services
       case url
       when 'https://www.consumerfinance.gov/about-us/blog/'
         ScraperConsumerFinancial.new(url)
+      when 'https://www.moneymanagement.org/blog'
+        Services::ScraperMoneyManagement.new(url)
       else
         raise "there is not scraper for this site: #{url}"
       end

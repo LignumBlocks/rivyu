@@ -8,6 +8,7 @@ class ScraperPageJob < ApplicationJob
 
     links.each do |link|
       ScraperArticleContentJob.perform_later(url, link)
+      # puts link
     end
   rescue StandardError => e
     Rails.logger.error "Error en ScraperPageJob para #{url} página #{page_number}: #{e.message}"
