@@ -1,34 +1,60 @@
 module Ai
+  class ArticleProcessor
+    def initialize(article)
+      @article = article
+      @model = Ai::LlmHandler.new('gemini-1.5-flash-8b')
+    end
+
+    def create_hacks!
+      article_hack_extraction = extract_hacks
+      @article.content_summary = article_hack_extraction['content_summary']
+      hacks_in_article = article_hack_extraction['are_hacks']
+      @article.are_hacks = hacks_in_article
+      @article.justification = article_hack_extraction['justification']
+      hacks_list = article_hack_extraction['hacks_list']
+      if hacks_in_article
+        hacks_list.each do |hack|
+          @article.create_hack(init_title: hack['hack_title'], summary: hack['brief_description'], justification: hack['hack_justification'])
+        end
+      end
+    end
+
+    private
+
+    def extract_hacks
+      prompt = AI::PROMPTS['CHAIN_OF_THOUGHT']
+      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { metadata: @article.metadata, page_content: @article.content})
+      chain_of_thought = @model.run(prompt_text)
+      prompt = AI::PROMPTS['VERIFICATION_REVIEW']
+      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { analysis_output: chain_of_thought })
+      review = @model.run(prompt_text)
+      prompt = AI::PROMPTS['HACK_VERIFICATION']
+      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { page_content: @article.content, analysis_output: review })
+      result = @model.run(prompt_text)
+      result = result.gsub('json', '').gsub('```', '').strip
+      JSON.parse(result)
+    end
+  end
+
   class HackProcessor
     def initialize(hack)
       @hack = hack
       @model = Ai::LlmHandler.new('gemini-1.5-flash-8b')
     end
 
-    def find_queries!
-      queries = queries_for_hack
-      queries.each { |query| @hack.queries.create(content: query) }
-    end
-
-    def validate_financial_hack!
-      validation = Ai::RagLlmHandler.new('gemini-1.5-flash-8b').validation_for_hack(@hack)
-      @hack.create_hack_validation!(analysis: validation[:analysis], status: validation[:status],
-                                    links: validation[:links])
-    end
-
     def extend_hack!
       free_description = hack_description('FREE_DESCRIPTION')
       premium_description = hack_description('PREMIUM_DESCRIPTION', free_description)
-      grown_descriptions = grow_descriptions(free_description, premium_description, 4)
+      grown_descriptions = grow_descriptions(free_description, premium_description)
       free_structured = hack_structure(grown_descriptions[:free_description], 'STRUCTURED_FREE_DESCRIPTION')
       premium_structured = hack_structure(grown_descriptions[:premium_description], 'STRUCTURED_PREMIUM_DESCRIPTION')
-      @hack.create_hack_structured_info!(hack_title: free_structured['Hack Title'],
+      @hack.create_hack_structured_info!(free_title: free_structured['Hack Title'],
                                          description: free_structured['Description'],
                                          main_goal: free_structured['Main Goal'],
                                          steps_summary: free_structured['steps(Summary)'],
                                          resources_needed: free_structured['Resources Needed'],
                                          expected_benefits: free_structured['Expected Benefits'],
-                                         extended_title: premium_structured['Extended Title'],
+                                         premium_title: premium_structured['Extended Title'],
                                          detailed_steps: premium_structured['Detailed steps'],
                                          additional_tools_resources: premium_structured['Additional Tools and Resources'],
                                          case_study: premium_structured['Case Study'])
@@ -62,71 +88,40 @@ module Ai
 
     private
 
-    def queries_for_hack(num_queries = 2)
-      prompt = Prompt.find_by_code('GENERATE_QUERIES')
-      prompt_text = prompt.build_prompt_text({ num_queries:, hack_title: @hack.title, hack_summary: @hack.summary })
-      system_prompt_text = prompt.system_prompt
-      result = @model.run(prompt_text, system_prompt_text)
-      result = result.gsub('json', '').gsub('```', '').strip
-      JSON.parse(result)
-    end
-
-    def hack_structure(description, prompt_code)
-      prompt = Prompt.find_by_code(prompt_code)
-      prompt_text = prompt.build_prompt_text({ analysis: description })
-      system_prompt_text = prompt.system_prompt
-      result = @model.run(prompt_text, system_prompt_text)
-      JSON.parse(result.gsub("```json\n", '').gsub('```', '').strip)
-    end
-
-    def enriched_description(description, prompt_code, chunks, free = '')
-      prompt = Prompt.find_by_code(prompt_code)
-      prompt_text = prompt.build_prompt_text({ chunks:, free_analysis: free, previous_analysis: description })
-      system_prompt_text = prompt.system_prompt
-      @model.run(prompt_text, system_prompt_text)
+    def build_prompt_text(prompt_text, tags_to_replace = {})
+      keys = tags_to_replace.keys
+      tags = keys.map { |key| "[{#{key}}]" }
+      tags.each_with_index { |tag, index| prompt_text.gsub!(tag, tags_to_replace[keys[index]].to_s) }
+      prompt_text
     end
 
     def hack_description(prompt_code, analysis = '')
-      prompt = Prompt.find_by_code(prompt_code)
-      prompt_text = prompt.build_prompt_text({ hack_title: @hack.title, hack_summary: @hack.summary,
-                                               original_text: @hack.video.transcription.content, analysis: })
-      system_prompt_text = prompt.system_prompt
-      @model.run(prompt_text, system_prompt_text)
+      prompt = AI::PROMPTS[prompt_code]
+      prompt_text = build_prompt_text(prompt, { hack_title: @hack.title, hack_summary: @hack.summary, analysis: })
+      @model.run(prompt_text)
     end
 
-    def grow_descriptions(free_description, premium_description, times, k = 8)
-      rag = Ai::RagLlmHandler.new('gemini-1.5-flash-8b')
-      documents = rag.retrieve_similar_for_hack(rag.collection_name, "#{free_description}\n#{premium_description}",
-                                                { "hack_id": @hack.id.to_s }, k * times)
-      documents.shuffle!
-
-      latest_free = free_description
-      latest_premium = premium_description
-
-      sections = documents.each_slice(k)
-      sections.each do |section|
-        chunks = ''
-        section.each do |document|
-          id_parts = document['id'].split('-')
-          scraped_result_id = id_parts[0].to_i
-          chunk_index = id_parts[1].to_i
-          sr = ScrapedResult.find(scraped_result_id)
-          next unless sr
-
-          content_chunks = Langchain::Chunker::RecursiveText.new(sr.content, chunk_size: 2000,
-                                                                             chunk_overlap: 300).chunks
-          next unless chunk_index >= 0 && chunk_index < content_chunks.length
-
-          chunks += "Relevant context section:\n... #{content_chunks[chunk_index].text} ...\n---\n"
-        end
-
-        latest_free = enriched_description(latest_free, 'ENRICH_FREE_DESCRIPTION', chunks)
-        latest_premium = enriched_description(latest_premium, 'ENRICH_PREMIUM_DESCRIPTION', chunks)
-      end
+    def grow_descriptions(free_description, premium_description)
+      prompt = AI::PROMPTS['ENRICH_FREE_DESCRIPTION']
+      prompt_text = build_prompt_text(prompt, { page_content: @hack.article.content, metadata: @hack.article.metadata,
+                                                previous_analysis: free_description })
+      enriched_description_free = @model.run(prompt_text)
+      prompt = AI::PROMPTS['ENRICH_PREMIUM_DESCRIPTION']
+      prompt_text = build_prompt_text(prompt, { page_content: @hack.article.content, metadata: @hack.article.metadata,
+                                                free_analysis: enriched_description_free, previous_analysis: premium_description })
+      enriched_description_premium = @model.run(prompt_text)
       {
-        free_description: latest_free,
-        premium_description: latest_premium
+        free_description: enriched_description_free,
+        premium_description: enriched_description_premium
       }
+    end
+
+    def hack_structure(description, prompt_code)
+      prompt = AI::PROMPTS[prompt_code]
+      prompt_text = build_prompt_text(prompt, { analysis: description })
+      system_prompt_text = prompt.system_prompt
+      result = @model.run(prompt_text, system_prompt_text)
+      JSON.parse(result.gsub("```json\n", '').gsub('```', '').strip)
     end
 
     def classification_from_free_description(structured)
@@ -138,16 +133,6 @@ module Ai
         JSON.parse(structured[:steps_summary])
       rescue StandardError
         structured[:steps_summary]
-      end
-      resources_needed = begin
-        JSON.parse(structured[:resources_needed])
-      rescue StandardError
-        structured[:resources_needed]
-      end
-      expected_benefits = begin
-        JSON.parse(structured[:expected_benefits])
-      rescue StandardError
-        structured[:expected_benefits]
       end
       free_description = ''
       free_description << "Hack Title\n"
@@ -168,12 +153,11 @@ module Ai
     end
 
     def get_hack_classifications(free_description)
-      prompt_complexity = Prompt.find_by_code('COMPLEXITY_CLASSIFICATION')
-      prompt_financial_categories = Prompt.find_by_code('FINANCIAL_CLASSIFICATION')
-      format_hash = { hack_description: free_description }
+      prompt_complexity = AI::PROMPTS['COMPLEXITY_CLASSIFICATION']
+      prompt_financial_categories = AI::PROMPTS['FINANCIAL_CLASSIFICATION']
+      format_hash = { hack_description: free_description, metadata: @hack.article.metadata }
       prompt_text_complexity = prompt_complexity.build_prompt_text(format_hash)
       prompt_text_financial_categories = prompt_financial_categories.build_prompt_text(format_hash)
-      system_prompt_text = prompt_complexity.system_prompt
       begin
         result_complexity = @model.run(prompt_text_complexity, system_prompt_text)
         result_categories = @model.run(prompt_text_financial_categories, system_prompt_text)
