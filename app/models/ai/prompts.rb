@@ -3,8 +3,7 @@ module Ai
   class Prompts
     def self.prompts
       {
-        'CHAIN_OF_THOUGHT': "You are an expert financial analyst. Review the following content:
-Metadata:\n```\n[{metadata}]\n```\nContent:\n```\n[{page_content}]\n```\n
+        'CHAIN_OF_THOUGHT': "You are an expert financial analyst. Review the following content:\nMetadata:\n```\n[{metadata}]\n```\nContent:\n```\n[{page_content}]\n```\n
 Analyze it step by step to identify any financial strategies that could help individuals optimize their finances, save money, increase income, or improve their overall economic situation.
 First, summarize the main topics discussed. Then, evaluate each topic to determine if it includes actionable financial advice with the characteristics described.",
 
@@ -14,9 +13,8 @@ The analysis is as follows:\n```\n[{analysis_output}]\n```\nYour task:
 2. If none meet the criteria, respond with: 'No qualifying financial hacks were identified in this content.' and explain why.",
 
         'HACK_VERIFICATION': "As a financial analysis and verification expert, you are reviewing an analysis of financial strategies for the presence of qualifying financial hacks.
-A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals. A hack is a legal interesting advice to improve th finances of individuals.
-
-Below is some content that may contain financial hacks, and a previous verification analysis of this content.
+A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals. A hack is a legal interesting advice to improve the finances of individuals.
+\nBelow is some content that may contain financial hacks, and a previous verification analysis of this content.
 \nContent:\n```\n[{page_content}]\n``` \nPrevious Analysis:\n```\n[{analysis_output}]\n```\n
 Your task is to identify whether the analysis output found financial hacks in the content.\nProvide the result as a JSON object in this format:\n
 ```json\n{\n   \"content_summary\": <extract of the main points of the content. >,\n   \"are_hacks\": <a boolean indicating if any hacks were found in the analysis, otherwise false>,\n
@@ -26,7 +24,7 @@ Your task is to identify whether the analysis output found financial hacks in th
 If no hacks are found, set 'are_hacks' to false and provide a reasoning explanation in 'justification.' Leave 'hacks_list' empty in this case. Make sure each identified hack in the list has a clear title and reasoned justification in Markdown format.",
 
         'FREE_DESCRIPTION': "You are an expert financial analyst with a deep understanding of financial hacks and strategies.\nThis is a financial hack information.
-Hack Title:\n[{hack_title}]\n---\nSummary:\n[{hack_summary}]\n---\n
+Initial hack title:\n[{hack_title}]\n---\nBrief summary:\n[{hack_summary}]\n---\n
 Your task is to provide a comprehensive analysis of the financial hack described above, adhering to the following guidelines. The result will be read directly by a user, keep that in mind. The analysis should be deeply detailed, structured, and articulate, providing the user with a clear understanding of this financial hack and its implications. Only answer about the indications in the guideline. The style should be in 2nd person, speaking to a user. Never mention 'this hack', substitute that for a reference to the title. Adapt examples and terminology to the user's region or state within the USA. Align with current laws and regulations in the USA and specific states.
 Write it like a Medium post about financial strategies advices.\n\nThe format should follow this structure and guidelines:\n
 # Hack Title:\n  Provide a concise and engaging title for the hack.\n
@@ -37,7 +35,7 @@ Write it like a Medium post about financial strategies advices.\n\nThe format sh
 ## Expected Benefits:\n  Briefly outline the financial or psychological benefits of applying the hack (e.g., improved savings discipline, accelerated debt payoff, reduced stress, etc.).",
 
         'PREMIUM_DESCRIPTION': "You are an expert financial analyst with a deep understanding of financial hacks and strategies.\n
-Hack previous title:\n[{hack_title}]\n---\nBrief summary:\n[{hack_summary}]\n---\nSimplified analysis\n[{analysis}]\n---\n
+Initial hack title:\n[{hack_title}]\n---\nBrief summary:\n[{hack_summary}]\n---\nSimplified analysis\n[{analysis}]\n---\n
 Your task is to provide a comprehensive analysis of the financial hack described above, adhering to the following guidelines. The result will be read directly by a user, keep that in mind.\nYour Analysis should be deeply detailed, structured, and articulate, providing the user with a clear understanding of this financial hack and its implications. Only answer about the indications in the guideline. The style should be in 2nd person, speaking to a user. Never mention 'this hack', substitute that for a reference to the title. Adapt examples and terminology to the user's region or state within the USA. Align with current laws and regulations in the USA and specific states.
 Write it like a Medium post about financial strategies advices.\n\nThe format should follow this structure and guidelines:\n
 # Extended Title:\n  Provide an extended version of the title in the `Simplified analysis` to reflect the in-depth content.\n
