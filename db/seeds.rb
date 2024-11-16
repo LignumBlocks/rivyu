@@ -1,11 +1,3 @@
-User.all.destroy_all
-Role.all.destroy_all
-
-role = Role.create!(name: 'admin')
-
-admin = User.create!(email: 'admin@hintsly.dev', password: 'password', password_confirmation: 'password')
-admin.roles << role
-
 Source.all.destroy_all
 sources = [
   { name: 'Consumer Finance', link: 'https://www.consumerfinance.gov/about-us/blog/' },
@@ -14,10 +6,10 @@ sources = [
 
 sources.each { |source| Source.create(source) }
 
-# Crear clasificaciones
-HackCategory.all.destroy_all
-Category.all.destroy_all
-Classification.all.destroy_all
+# # Crear clasificaciones
+# HackCategory.all.destroy_all
+# Category.all.destroy_all
+# Classification.all.destroy_all
 
 financial_classification = Classification.create(name: 'Financial')
 complexity_classification = Classification.create(name: 'Complexity')
