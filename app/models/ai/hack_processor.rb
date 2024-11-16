@@ -1,41 +1,4 @@
 module Ai
-  class ArticleProcessor
-    def initialize(article)
-      @article = article
-      @model = Ai::LlmHandler.new('gemini-1.5-flash-8b')
-    end
-
-    def create_hacks!
-      article_hack_extraction = extract_hacks
-      @article.content_summary = article_hack_extraction['content_summary']
-      hacks_in_article = article_hack_extraction['are_hacks']
-      @article.are_hacks = hacks_in_article
-      @article.justification = article_hack_extraction['justification']
-      hacks_list = article_hack_extraction['hacks_list']
-      if hacks_in_article
-        hacks_list.each do |hack|
-          @article.create_hack(init_title: hack['hack_title'], summary: hack['brief_description'], justification: hack['hack_justification'])
-        end
-      end
-    end
-
-    private
-
-    def extract_hacks
-      prompt = AI::PROMPTS['CHAIN_OF_THOUGHT']
-      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { metadata: @article.metadata, page_content: @article.content})
-      chain_of_thought = @model.run(prompt_text)
-      prompt = AI::PROMPTS['VERIFICATION_REVIEW']
-      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { analysis_output: chain_of_thought })
-      review = @model.run(prompt_text)
-      prompt = AI::PROMPTS['HACK_VERIFICATION']
-      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { page_content: @article.content, analysis_output: review })
-      result = @model.run(prompt_text)
-      result = result.gsub('json', '').gsub('```', '').strip
-      JSON.parse(result)
-    end
-  end
-
   class HackProcessor
     def initialize(hack)
       @hack = hack
@@ -65,7 +28,7 @@ module Ai
       classification_results = classification_from_free_description(structured)
       result_complexity = classification_results[:complexity]
       result_financial_categories = classification_results[:financial_categories]
-
+      puts "result_complexity.keys #{result_complexity.keys}"
       complexity_category_name = result_complexity['category']
       complexity_justification = result_complexity['explanation']
       category_instance = Category.find_by_name(complexity_category_name)
@@ -86,27 +49,27 @@ module Ai
       end
     end
 
-    private
-
-    def build_prompt_text(prompt_text, tags_to_replace = {})
+    def self.build_prompt_text(prompt_text, tags_to_replace = {})
       keys = tags_to_replace.keys
       tags = keys.map { |key| "[{#{key}}]" }
       tags.each_with_index { |tag, index| prompt_text.gsub!(tag, tags_to_replace[keys[index]].to_s) }
       prompt_text
     end
 
+    private
+
     def hack_description(prompt_code, analysis = '')
-      prompt = AI::PROMPTS[prompt_code]
+      prompt = Ai::Prompts.prompts[prompt_code]
       prompt_text = build_prompt_text(prompt, { hack_title: @hack.title, hack_summary: @hack.summary, analysis: })
       @model.run(prompt_text)
     end
 
     def grow_descriptions(free_description, premium_description)
-      prompt = AI::PROMPTS['ENRICH_FREE_DESCRIPTION']
+      prompt = Ai::Prompts.prompts[:ENRICH_FREE_DESCRIPTION]
       prompt_text = build_prompt_text(prompt, { page_content: @hack.article.content, metadata: @hack.article.metadata,
                                                 previous_analysis: free_description })
       enriched_description_free = @model.run(prompt_text)
-      prompt = AI::PROMPTS['ENRICH_PREMIUM_DESCRIPTION']
+      prompt = Ai::Prompts.prompts[:ENRICH_PREMIUM_DESCRIPTION]
       prompt_text = build_prompt_text(prompt, { page_content: @hack.article.content, metadata: @hack.article.metadata,
                                                 free_analysis: enriched_description_free, previous_analysis: premium_description })
       enriched_description_premium = @model.run(prompt_text)
@@ -117,7 +80,7 @@ module Ai
     end
 
     def hack_structure(description, prompt_code)
-      prompt = AI::PROMPTS[prompt_code]
+      prompt = Ai::Prompts.prompts[prompt_code]
       prompt_text = build_prompt_text(prompt, { analysis: description })
       system_prompt_text = prompt.system_prompt
       result = @model.run(prompt_text, system_prompt_text)
@@ -153,8 +116,8 @@ module Ai
     end
 
     def get_hack_classifications(free_description)
-      prompt_complexity = AI::PROMPTS['COMPLEXITY_CLASSIFICATION']
-      prompt_financial_categories = AI::PROMPTS['FINANCIAL_CLASSIFICATION']
+      prompt_complexity = Ai::Prompts.prompts[:COMPLEXITY_CLASSIFICATION]
+      prompt_financial_categories = Ai::Prompts.prompts[:FINANCIAL_CLASSIFICATION]
       format_hash = { hack_description: free_description, metadata: @hack.article.metadata }
       prompt_text_complexity = prompt_complexity.build_prompt_text(format_hash)
       prompt_text_financial_categories = prompt_financial_categories.build_prompt_text(format_hash)
