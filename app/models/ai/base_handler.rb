@@ -1,13 +1,12 @@
 module Ai
   class BaseHandler
-    OPENAI_API_KEY = ENV['OPENAI_API_KEY']
     GOOGLE_API_KEYS = ENV.fetch('GOOGLE_API_KEYS', '')
 
     MODELS = %w[gemini-1.5-flash gemini-1.5-flash-8b].freeze
 
     DEFAULT_SYSTEM_PROMPT = 'You are a helpful assistant. Answer all questions to the best of your ability.'.freeze
 
-    def initialize(model_name = 'gemini-1.5-flash-8b', temperature = 0.5)
+    def initialize(model_name = 'gemini-1.5-flash-8b', temperature = 0.7)
       @model_name = MODELS.include?(model_name) ? model_name : MODELS[1]
       @temperature = temperature
 
