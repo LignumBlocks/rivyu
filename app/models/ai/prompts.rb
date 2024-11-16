@@ -8,12 +8,15 @@ Metadata:\n```\n[{metadata}]\n```\nContent:\n```\n[{page_content}]\n```\n
 Analyze it step by step to identify any financial strategies that could help individuals optimize their finances, save money, increase income, or improve their overall economic situation.
 First, summarize the main topics discussed. Then, evaluate each topic to determine if it includes actionable financial advice with the characteristics described.",
 
-        'VERIFICATION_REVIEW': "As a financial verification expert, review the analysis below to identify any genuine financial hacks based on the following criteria: measurable financial value, originality, clear applicability, legality and demonstrable impact.
+        'VERIFICATION_REVIEW': "As a financial verification expert, review the analysis below to identify any financial strategies that could help individuals optimize their finances, save money, increase income, or improve their overall economic situation. These financial advices can range from easily accessible tips to sophisticated strategies used by high-net-worth individuals.
 The analysis is as follows:\n```\n[{analysis_output}]\n```\nYour task:
-1. Verify whether any described strategies meet these criteria. If so, list each strategy as a financial hack with a one-sentence description, highlighting the specific financial benefit, how to apply it and the user conditions and resources needed.
-2. If none meet the hack criteria, respond with: 'No qualifying financial hacks were identified in this content.' and explain why.",
+1. Verify whether any described strategies meet these criteria. If so, list each strategy with a one-sentence description, highlighting the specific financial benefit, how to apply it and the user conditions and resources needed.
+2. If none meet the criteria, respond with: 'No qualifying financial hacks were identified in this content.' and explain why.",
 
-        'HACK_VERIFICATION': "As a financial analysis and verification expert, you are reviewing an analysis of financial strategies for the presence of qualifying financial hacks. Below is the original content and a previous verification analysis.
+        'HACK_VERIFICATION': "As a financial analysis and verification expert, you are reviewing an analysis of financial strategies for the presence of qualifying financial hacks.
+A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals. A hack is a legal interesting advice to improve th finances of individuals.
+
+Below is some content that may contain financial hacks, and a previous verification analysis of this content.
 \nContent:\n```\n[{page_content}]\n``` \nPrevious Analysis:\n```\n[{analysis_output}]\n```\n
 Your task is to identify whether the analysis output found financial hacks in the content.\nProvide the result as a JSON object in this format:\n
 ```json\n{\n   \"content_summary\": <extract of the main points of the content. >,\n   \"are_hacks\": <a boolean indicating if any hacks were found in the analysis, otherwise false>,\n
