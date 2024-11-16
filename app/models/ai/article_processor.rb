@@ -15,8 +15,8 @@ module Ai
       return unless hacks_in_article
 
       hacks_list.each do |hack|
-        @article.create_hack(init_title: hack['hack_title'], summary: hack['brief_description'],
-                             justification: hack['hack_justification'])
+        Hack.create({ article: @article, init_title: hack['hack_title'], summary: hack['brief_description'],
+                      justification: hack['hack_justification'] })
       end
     end
 
