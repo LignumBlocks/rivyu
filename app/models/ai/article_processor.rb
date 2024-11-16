@@ -12,6 +12,7 @@ module Ai
       @article.are_hacks = hacks_in_article
       @article.justification = article_hack_extraction['justification']
       hacks_list = article_hack_extraction['hacks_list']
+      @article.save
       return unless hacks_in_article
 
       hacks_list.each do |hack|
@@ -34,10 +35,7 @@ module Ai
       prompt_text = Ai::HackProcessor.build_prompt_text(prompt,
                                                         { page_content: @article.content, analysis_output: review })
       result = @model.run(prompt_text)
-      # puts result
-      # puts '----------'
       result = result.gsub('json', '').gsub('```', '').strip
-      # puts result
       JSON.parse(result)
     end
   end
