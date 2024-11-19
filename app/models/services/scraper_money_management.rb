@@ -4,32 +4,25 @@ module Services
     include HTTParty
 
     def max_pages
-      options = Selenium::WebDriver::Chrome::Options.new
-      options.add_argument('--headless=new')
-      options.add_argument('--disable-gpu')
-      options.add_argument('--no-sandbox')
+      api_url = 'https://www.moneymanagement.org/api/sitecore/Blog/BlogList_API'
+      params = {
+        filterType: 0,
+        dateFilter: '01/01/01, 12:00 AM',
+        valueFilter: 'null',
+        page: 1,
+        pageSize: 10
+      }
 
-      driver = Selenium::WebDriver.for :chrome, options: options
-      driver.get(url)
+      response = HTTParty.get(api_url, query: params)
 
-      sleep 5
+      if response.code == 200
+        parsed_response = JSON.parse(response.body)
+        parsed_response['totalPages']
 
-      document = Nokogiri::HTML(driver.page_source)
-
-      # File.open(Rails.root.join('tmp', 'page_content.html'), 'w') do |file|
-      #  file.write(document.to_html)
-      # end
-
-      count_text = document.at_css('div.pages-inner div.count').text.strip
-      total_posts = count_text.match(/of (\d+) posts/)[1].to_i
-      posts_per_page = count_text.match(/(\d+) - (\d+)/) do |match|
-        match[2].to_i - match[1].to_i + 1
+      else
+        puts "Failed to fetch data. HTTP Code: #{response.code}"
+        nil
       end
-
-      total_pages = (total_posts.to_f / posts_per_page).ceil
-
-      driver.quit
-      total_pages
     end
 
     def scrape_links(page_number)
