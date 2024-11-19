@@ -36,47 +36,19 @@
             </div>
           </div>
 
-          <div date-rangepicker class="">
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                </svg>
-              </div>
-              <input id="datepicker-range-start"
-                     name="q[created_at_gteq]"
-                     type="text"
-                     value="<%= params.dig(:q, :created_at_gteq) %>"
-                     class="bg-gray-50 border border-gray-300 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                     placeholder="Select start date">
-            </div>
-
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                </svg>
-              </div>
-              <input id="datepicker-range-end"
-                     name="q[created_at_lteq]"
-                     type="text"
-                     value="<%= params.dig(:q, :created_at_lteq) %>"
-                     class="bg-gray-50 border border-gray-300  text-sm focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                     placeholder="Select end date">
-            </div>
-          </div>
-
           <div class="flex flex-col gap-2">
+            <% complexity_classification = Classification.find_by_name('Complexity') %>
+            <% financial_classification = Classification.find_by_name('Financial') %>
             <div>
               <%= f.select :hack_categories_category_classification_id_eq,
-                           options_for_select(Classification.pluck(:name, :id), params.dig(:q, :hack_categories_category_classification_id_eq)),
-                           { include_blank: "All Classifications" },
+                           options_for_select(Category.where(classification_id: complexity_classification.id).pluck(:name, :id), params.dig(:q, :hack_categories_category_classification_id_eq)),
+                           { include_blank: "All Complexities" },
                            class: "bg-gray-50 mt-2 border border-gray-300  text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
             <div>
               <%= f.select :hack_categories_category_id_eq,
-                           options_for_select(Category.pluck(:name, :id), params.dig(:q, :hack_categories_category_id_eq)),
-                           { include_blank: "All Categories" },
+                           options_for_select(Category.where(classification_id: financial_classification.id).pluck(:name, :id), params.dig(:q, :hack_categories_category_id_eq)),
+                           { include_blank: "All Financials" },
                            class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
           </div>
