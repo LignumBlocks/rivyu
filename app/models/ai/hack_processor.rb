@@ -112,7 +112,8 @@ module Ai
       free_description = free_from_structured
       prompt_complexity = Ai::Prompts.prompts[:COMPLEXITY_CLASSIFICATION]
       prompt_financial_categories = Ai::Prompts.prompts[:FINANCIAL_CLASSIFICATION]
-      format_hash = { hack_description: free_description, metadata: @hack.article.metadata }
+      format_hash = { hack_summary: @hack.summary, hack_description: free_description,
+                      metadata: @hack.article.metadata }
       prompt_text_complexity = Ai::HackProcessor.build_prompt_text(prompt_complexity, format_hash)
       prompt_text_financial_categories = Ai::HackProcessor.build_prompt_text(prompt_financial_categories, format_hash)
       begin
