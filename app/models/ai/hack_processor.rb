@@ -26,25 +26,21 @@ module Ai
 
     def classify_hack!
       classification_results = get_hack_classifications
-      result_complexity = classification_results[:complexity]
-      result_financial_categories = classification_results[:financial_categories]
-      complexity_category_name = result_complexity['category']
-      complexity_justification = result_complexity['explanation']
-      category_instance = Category.find_by_name(complexity_category_name)
-      HackCategory.create(
-        hack: @hack,
-        category: category_instance,
-        justification: complexity_justification
-      )
+      classification_results.each_value do |classification_data|
+        next if classification_data.nil? # Skip if classification failed
 
-      financial_categories = result_financial_categories.map { |item| [item['category'], item['explanation']] }
-      financial_categories.each do |category, explanation|
-        category_instance = Category.find_by_name(category)
-        HackCategory.create(
-          hack: @hack,
-          category: category_instance,
-          justification: explanation
-        )
+        classification_data.each do |category_hash|
+          category_name = category_hash['category']
+          explanation = category_hash['explanation']
+          puts category_name
+          puts explanation
+          category_instance = Category.find_by_name(category_name)
+          HackCategory.create(
+            hack: @hack,
+            category: category_instance,
+            justification: explanation
+          )
+        end
       end
     end
 
@@ -105,33 +101,37 @@ module Ai
       free_description << "#{@hack.main_goal}\n\n"
       free_description << "Steps to Implement\n"
       free_description << "#{@hack.steps_summary}\n\n"
+      free_description << "Resources Needed\n"
+      free_description << "#{@hack.resources_needed}\n\n"
+      free_description << "Expected Benefits\n"
+      free_description << "#{@hack.expected_benefits}\n\n"
       free_description
     end
 
     def get_hack_classifications
       free_description = free_from_structured
-      prompt_complexity = Ai::Prompts.prompts[:COMPLEXITY_CLASSIFICATION]
-      prompt_financial_categories = Ai::Prompts.prompts[:FINANCIAL_CLASSIFICATION]
       format_hash = { hack_summary: @hack.summary, hack_description: free_description,
                       metadata: @hack.article.metadata }
-      prompt_text_complexity = Ai::HackProcessor.build_prompt_text(prompt_complexity, format_hash)
-      prompt_text_financial_categories = Ai::HackProcessor.build_prompt_text(prompt_financial_categories, format_hash)
-      begin
-        result_complexity = @model.run(prompt_text_complexity)
-        result_categories = @model.run(prompt_text_financial_categories)
-        result_complexity = result_complexity.gsub("```json\n", '').gsub('```', '').strip
-        result_categories = result_categories.gsub("```json\n", '').gsub('```', '').strip
-        {
-          complexity: JSON.parse(result_complexity),
-          financial_categories: JSON.parse(result_categories)
-        }
-      rescue StandardError => e
-        puts "Error in hack classification: #{e.message}"
-        {
-          complexity: nil,
-          categories: nil
-        }
+      classifications = {}
+      class_and_cat_hash = Ai::Classification.classifications_and_categories
+      class_and_cat_hash.each do |class_name, class_data|
+        prompt_key = class_data[:type] == 'single_cat' ? :GENERIC_SINGLE_CATEGORY_CLASSIFICATION : :GENERIC_MULTI_CATEGORY_CLASSIFICATION
+        prompt = Ai::Prompts.prompts[prompt_key]
+        explained_categories = class_data[:categories].map do |cat|
+          "- #{cat[:name]}: #{cat[:description]}\n"
+        end.join('')
+        prompt_data = format_hash.merge({
+                                          class_name: class_name.to_s,
+                                          classification_description: class_data[:description],
+                                          explained_categories: explained_categories
+                                        })
+        prompt_text = Ai::HackProcessor.build_prompt_text(prompt, prompt_data)
+        result = @model.run(prompt_text)
+        result = result.gsub("```json\n", '').gsub('```', '').strip
+        parsed = JSON.parse(result)
+        classifications[class_name.to_s] = class_data[:type] == 'single_cat' ? [parsed] : parsed
       end
+      classifications
     end
   end
 end

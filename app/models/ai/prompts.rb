@@ -3,6 +3,94 @@ module Ai
   class Prompts
     def self.prompts
       {
+        'HACK_DISCRIMINATION': "A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals.
+When scanning content, prioritize hacks that meet the following criteria:
+
+- Clear Financial Value: Must demonstrate measurable financial benefits such as savings, income increases, or tax optimization with impact ranging from minor to significant.
+- Applicability: Must be implementable by users, specifying who can use it and under what conditions (e.g., income level, country).
+- Legality and Risks: Must comply with legal standards, highlighting legal implications, tax loopholes, and ethical issues. Key terms: legal complexities, tax exemptions, offshore jurisdictions.
+- Clear Explanation: Prioritize hacks offering detailed explanations, preferably in tutorial or step-by-step format.
+- Temporal Relevance: Must be suitable for the current economic context. Look for mentions of temporality or economic conditions in which the hack works.
+- Impact Verification: Look for indications of measurable financial impact: specific figures or expected results.
+
+Analyze the following content for financial hacks:
+```
+[{page_content}]
+```
+
+The output must be a json with the following structure:
+```json
+{
+    \"content_summary\": <extract of the main points of the content. >,
+    \"are_hacks\": <a boolean indicating if any hacks were found in the analysis, otherwise false>,
+    \"justification\": <explanation of your reasoning regarding the 'are_hacks' conclusion. In Markdown format, using lists for each key point and bold text for particularly important findings.>,
+    \"hacks_list\": [
+        {
+            \"hack_title\": <a concise, engaging and descriptive title for the hack>,
+            \"brief_description\": <Markdown-formatted description for the hack, highlighting the specific financial benefit, how to apply it and the user conditions and resources needed>,
+            \"hack_justification\": <Markdown-formatted explanation of why this was selected as a hack, highlighting key points with lists and bold emphasis on important findings>
+        }
+    ]
+}
+```
+If no hacks are found, set 'are_hacks' to false and provide a reasoning explanation in 'justification.' Leave 'hacks_list' empty in this case. Make sure each identified hack in the list has a clear title and reasoned justification in Markdown format.",
+        'HACK_ADVICE': "You are an expert financial analyst. Review the following financial strategy:
+[{hack_info}]\n\n---\n
+You need to qualify the proposed strategy as a simple financial advice or a complex financial hack.
+A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals.
+If it is a common or widely known financial strategy it should be classified as financial advice. Otherwise, if it offers something unique or little-known; or in a different approach, then it must be a financial advice.
+A financial advice is usually more simple to implement, while a hack is more novel, little known or complex to understand or implement.
+
+Provide your response only as a JSON, in the following format:
+```json
+{
+     \"classification\": \"<Hack or Advice>\",
+     \"explanation\": \"<A short explanation regarding the classification>\"
+}
+```",
+        'HACK_ADVICE_No1': "I would like to establish a framework for consistently analyzing and categorizing a series of financial materials (articles, blog posts, reports, etc.). For each piece of content, please follow a two-step analysis based on the criteria below. This will help classify the content into its appropriate category of financial advice or financial hack, and then further categorize it by its relevant financial niche.
+
+Step 1: Classification (Advice vs. Hack)
+Please evaluate each piece of content based on the following criteria to classify it as either financial advice or a financial hack:
+
+Purpose & Intent:
+Advice: Aims to provide sustainable, long-term financial guidance, based on established principles.
+Hack: Focuses on clever, quick solutions or workarounds that may not be widely applicable or could be risky.
+Risk & Ethics:
+Advice: Promotes responsible, ethical financial practices and gives a clear understanding of the associated risks.
+Hack: Involves unconventional or risky methods that could be legally or ethically questionable.
+Longevity vs. Short-Term Results:
+Advice: Advocates for strategies that benefit the reader in the long run, with an emphasis on gradual and sustained growth.
+Hack: Prioritizes immediate, short-term results that may not be sustainable over time.
+Scalability & Applicability:
+Advice: Offers solutions or strategies that are universally applicable across various financial situations.
+Hack: Applies only to specific scenarios and may not work universally, often exploiting gaps or shortcuts.
+Complexity & Transparency:
+Advice: Clear, transparent, easy to follow, and well-reasoned, with a solid rationale.
+Hack: May involve complex or hidden methods, relying on shortcuts or unconventional approaches that are not easily replicated.
+Step 2: Categorization by Financial Niche
+Once the classification is done, categorize the content into a specific financial niche based on the nature of the content. Below are common financial niches to consider when categorizing:
+
+Personal Finance: Content about budgeting, saving, managing debt, credit scores, emergency funds, etc.
+Investing: Topics related to stock market investments, mutual funds, ETFs, real estate, cryptocurrency, etc.
+Retirement Planning: Advice on pensions, 401(k) plans, IRAs, retirement savings strategies, Social Security, etc.
+Tax Planning: Strategies for minimizing taxes, tax deductions, credits, tax filing, tax avoidance, etc.
+Insurance & Risk Management: Advice on various types of insurance (health, life, property) and managing financial risks.
+Debt Management: Strategies for paying off debt, student loans, mortgages, and managing other liabilities.
+Financial Independence/Fire (FIRE): Content related to the Financial Independence, Retire Early movement, frugality, and early retirement strategies.
+If the content does not clearly fit into one of these categories, feel free to suggest an alternative niche or note that it does not neatly fit into the listed categories.
+
+Example Article/Section:
+\"One of the smartest ways to save money on your taxes is to open an offshore bank account in a tax-haven country. This allows you to shield your earnings from high tax rates and make your wealth grow faster without the interference of your home country’s tax authorities. Additionally, if you time your withdrawals correctly, you can avoid certain penalties and fees. However, it’s important to find the right jurisdiction, as some countries have stricter rules on foreign accounts than others.\"
+
+Task for Each Follow-up Piece of Content:
+For every new article, section, or piece of content I provide, please perform the following two tasks:
+
+Classify the content as either financial advice or a financial hack, based on the five criteria outlined above.
+Categorize the content into the appropriate financial niche (e.g., tax planning, investing, personal finance, retirement, etc.), and explain your reasoning for both the classification and the niche selection.
+Please provide a brief explanation of your classification and niche categorization for each piece of content, ensuring consistency in your analysis.
+
+Content:\n```\n[{hack_info}]\n```\n",
         'CHAIN_OF_THOUGHT': "You are an expert financial analyst. Review the following content:\nMetadata:\n```\n[{metadata}]\n```\nContent:\n```\n[{page_content}]\n```\n
 Analyze it step by step to identify any practical financial strategies or techniques that could help individuals optimize their finances, save money, increase income, or improve their overall economic situation. They should have measurable financial value, originality, clear applicability, legality, clear explanation and demonstrable impact.
 A financial hack is defined as:
@@ -116,17 +204,19 @@ Example for more than one tag:\n```json
 Example for one tag:\n```json
 [\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  }\n]\n```",
 
-        'GENERIC_SINGLE_CATEGORY_CLASSIFICATION': "Classify the financial hack into one of the following categories, based on [{based_on}]:\n
-[{explained_categories}]\n
-## Brief summary:\n[{hack_summary}]\n---\n## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
-Provide your response only as a JSON object with the values as plain strings, no markdown; in the following format:\n```json\n
-{\n    \"category\": \"<[{categories}]>\",\n    \"explanation\": \"<A short explanation regarding the classification>\",\n}\n```",
-
-        'GENERIC_MULTI_CATEGORY_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following [{class_name}] categories, state the applicable tags to the provided information.\n
+        'GENERIC_SINGLE_CATEGORY_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following '[{class_name}]' categories evaluate the financial hack taking into account: \"[{classification_description}]\".\n
 ##[{class_name}] categories:
 [{explained_categories}]\n
-## Brief summary:\n[{hack_summary}]\n---\n## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
-If there is more than one category fitting then return them all. Provide your response only as a JSON object, in the following format:\n
+## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
+Choose the more accurate category for the provided information.
+Provide your response only as a JSON object, in the following format:\n```json\n
+{\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\",\n}\n```",
+
+        'GENERIC_MULTI_CATEGORY_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following '[{class_name}]' categories evaluate the financial hack taking into account: \"[{classification_description}]\".\n
+##[{class_name}] categories:
+[{explained_categories}]\n
+## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
+State the applicable tags to the provided information. If there is more than one category fitting then return them all. Provide your response only as a JSON object, in the following format:\n
 Example for more than one tag:\n```json
 [\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  },\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n\"breve explanation\": \"<A short explanation regarding the classification>\"\n  },\n  // ...\n]\n```
 Example for one tag:\n```json
