@@ -20,7 +20,7 @@ module Ai
         hack_advice = hack_or_advice(hack_info)
         Hack.create({ article: @article, init_title: hack['hack_title'], summary: hack['brief_description'],
                       justification: hack['hack_justification'], is_advice: hack_advice['classification'],
-                      is_advice_justification: hack_advice['explanation'] })
+                      advice_justification: hack_advice['explanation'] })
       end
       hacks_list
     end
