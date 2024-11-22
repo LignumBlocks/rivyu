@@ -1,7 +1,7 @@
 <div class="relative h-screen overflow-x-auto mb-8 bg-white">
   <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class="py-5">      
-      <% breadcrumbs = [["Hacks", hacks_path], [@hack.premium_title, ""]] %>
+      <% breadcrumbs = [["Hacks", url_for(:back)], [@hack.premium_title, ""]] %>
       
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>     
     </div>

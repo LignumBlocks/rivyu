@@ -7,7 +7,6 @@ class HacksController < ApplicationController
   end
 
   def show
-    # @articles = current_user.channels.where(id: params[:article_id]).first
     @hack = Hack.find(params[:id])
     @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
   end

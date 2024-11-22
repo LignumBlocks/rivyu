@@ -1,7 +1,7 @@
 <div class="relative overflow-x-auto mb-8 bg-white">
     <div class="p-6 flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
         <div class=" flex gap-4">
-            <% breadcrumbs = [["Sources", sources_path], [@source.name, ""]] %>
+            <% breadcrumbs = [["Sources", url_for(:back)], [@source.name, ""]] %>
             <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
         </div>
     </div>

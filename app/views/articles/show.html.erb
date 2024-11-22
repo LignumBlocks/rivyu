@@ -1,8 +1,28 @@
 <div class="relative overflow-x-auto mb-8">
   <div class="p-6 flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class=" flex gap-4">
-      <% breadcrumbs = [["Articles", articles_path], [@article.link, ""]] %>
+      <% breadcrumbs = [["Sources", source_path(@article.source)], [@article.link, ""]] %>
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
     </div>
+  </div>
+
+  <div class="px-6 bg-white">
+    <a href="<%= @article.link %>" target="_blank" class="text-blue-600 dark:text-blue-500 hover:underline "><%= @article.link %></a>
+
+    <p class="font-bold mt-4">Hacks</p>
+    <% if @article.hacks.size.positive? %>
+      <% @article.hacks.each do |hack| %>
+        <p><a href="<%= hack_path(id: hack) %>" target="_blank" class="text-blue-600 dark:text-blue-500 hover:underline"><%= hack.init_title %></a></p>
+      <% end %>
+    <% else %>
+      <span class="bg-red-100 text-red-800 text-xs font-medium border border-red-300 me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">No hacks</span>
+    <% end %>
+
+    <p class="font-bold mt-4">Justification</p>
+    <p><%= raw(@markdown.render(@article.justification)) if @article.justification %></p>
+
+    <p class="font-bold mt-4">Metadata</p>
+    <p class="px-6" <%= render_json(@article.metadata) if @article.metadata %></p>
+
   </div>
 </div>

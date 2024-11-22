@@ -1,22 +1,25 @@
 <div class="p-6 pt-4 w-3/4">
-  <p class="font-bold">Init Title</p>
+  <p class="font-bold">Type: <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.is_advise? ? "Advice" : "Hack" %></span>
+  </p>
+
+  <% if hack.is_advise? %>
+    <p class="font-bold mt-4">Advise Justification</p>
+    <p><%= hack.advise_justification %></p>
+  <% end %>
+
+  <p class="font-bold mt-4">Init Title</p>
+  <p><%= hack.init_title %></p>
+
+  <p class="font-bold mt-4">Free Title</p>
+  <p><%= hack.free_title %></p>
+
+  <p class="font-bold mt-4">Extended Title</p>
   <p>
     <span><%= hack.premium_title %></span>
   </p>
-
-  <p class="font-bold">Free Title</p>
-  <p>
-    <span><%= hack.free_title %></span>
-  </p>
-
-  <p class="font-bold">Extended Title</p>
-  <p>
-    <span><%= hack.premium_title %></span>
-  </p>
-
 
   <p class="font-bold mt-4">Summary</p>
-  <p><%= raw(@markdown.render(hack.summary)) if hack.summary%></p>
+  <p><%= raw(@markdown.render(hack.summary)) if hack.summary %></p>
 
   <p class="font-bold mt-4">Justification</p>
   <p><%= raw(@markdown.render(hack.justification)) if hack.justification %></p>
@@ -29,7 +32,7 @@
       <% @hack.hack_categories.each do |hack_category| %>
         <li class="mb-2">
           <div class="inline-flex">
-            <h5 class="font-semibold"><%= hack_category.category.name %></h5>
+            <h5 class="font-semibold"><%= "#{hack_category.category.classification.name}:#{hack_category.category.name}" %></h5>
             <div class="flex items-center py-0.5 ">
               <svg data-popover-target="category-info-<%= hack_category.category.id %>" data-popover-placement="bottom"
                   class="w-3.5 h-3.5 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white cursor-pointer ms-1"
@@ -49,6 +52,7 @@
         </li>
       <% end %>
   </ul></p>
+
   <p class="font-bold mt-4">Main goal</p>
   <p><%= raw(@markdown.render(@hack.main_goal)) %></p>
 
@@ -70,8 +74,5 @@
   <p class="font-bold mt-4">Case Study</p>
   <p><%= raw(@markdown.render(@hack.case_study)) %></p>
 
-
-
-  <a href="<%= hack.article.link %>" target="_blank" class="text-blue-600 dark:text-blue-500 hover:underline">Ver Article</a>
-  
+  <a href="<%= article_path(id: @hack.article) %>" class="text-blue-600 dark:text-blue-500 hover:underline">Ver Article</a>
 </div>
