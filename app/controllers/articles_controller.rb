@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   def show
-    @q = Hack.ransack(params[:q])
+    @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     @article = Article.find(params[:id])
   end
 end
