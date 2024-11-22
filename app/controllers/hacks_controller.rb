@@ -53,6 +53,6 @@ class HacksController < ApplicationController
   end
 
   def hack_params
-    params.permit(:page, :filter, q: %i[video_channel_id_eq created_at_gteq created_at_lteq])
+    params.permit(:q)
   end
 end
