@@ -19,7 +19,7 @@ module Ai
         hack_info = "#{hack['hack_title']}:\n#{hack['brief_description']}"
         hack_advice = hack_or_advice(hack_info)
         Hack.create({ article: @article, init_title: hack['hack_title'], summary: hack['brief_description'],
-                      justification: hack['hack_justification'], is_advice: hack_advice['classification'],
+                      justification: hack['hack_justification'], is_advice: hack_advice['classification'] == 'Advice',
                       advice_justification: hack_advice['explanation'] })
       end
       hacks_list
@@ -50,9 +50,6 @@ module Ai
       prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { page_content: @article.content })
       result = @model.run(prompt_text)
       result = result.gsub('json', '').gsub('```', '').strip
-      File.open('log.md', 'a+') do |f|
-        f.write("\n#{@article.link}:\n---\n#{result}\n")
-      end
       JSON.parse(result)
     end
   end
