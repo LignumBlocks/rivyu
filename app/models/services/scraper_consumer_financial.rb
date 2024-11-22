@@ -6,7 +6,8 @@ module Services
     def max_pages
       response = HTTParty.get(url, headers: default_headers)
       document = Nokogiri::HTML(response.body)
-      document.at_css('input#m-pagination__current-page-0')['max'].to_i
+      # document.at_css('input#m-pagination__current-page-0')['max'].to_i
+      67
     end
 
     def scrape_links(page_number)
