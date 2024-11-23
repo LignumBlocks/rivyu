@@ -8,6 +8,8 @@ module Services
         ScraperConsumerFinancial.new(url)
       when 'https://www.moneymanagement.org/blog'
         Services::ScraperMoneyManagement.new(url)
+      when 'https://www.investopedia.com'
+        Services::ScraperInvestopedia.new(url)
       else
         raise "there is not scraper for this site: #{url}"
       end
