@@ -2,7 +2,7 @@ Source.all.destroy_all
 sources = [
   { name: 'Consumer Finance', link: 'https://www.consumerfinance.gov/about-us/blog/' },
   { name: 'Money Management', link: 'https://www.moneymanagement.org/blog' },
-  { name: 'Money Management', link: 'https://www.investopedia.com' }
+  { name: 'Investopedia', link: 'https://www.investopedia.com' }
 ]
 
 sources.each { |source| Source.create(source) }
