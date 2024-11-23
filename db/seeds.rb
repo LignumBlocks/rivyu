@@ -1,15 +1,16 @@
-# Source.all.destroy_all
-# sources = [
-#   { name: 'Consumer Finance', link: 'https://www.consumerfinance.gov/about-us/blog/' },
-#   { name: 'Money Management', link: 'https://www.moneymanagement.org/blog' }
-# ]
-#
-# sources.each { |source| Source.create(source) }
+Source.all.destroy_all
+sources = [
+  { name: 'Consumer Finance', link: 'https://www.consumerfinance.gov/about-us/blog/' },
+  { name: 'Money Management', link: 'https://www.moneymanagement.org/blog' },
+  { name: 'Money Management', link: 'https://www.investopedia.com' }
+]
+
+sources.each { |source| Source.create(source) }
 
 # # Crear clasificaciones
-# HackCategory.all.destroy_all
-# Category.all.destroy_all
-# Classification.all.destroy_all
+HackCategory.all.destroy_all
+Category.all.destroy_all
+Classification.all.destroy_all
 
 popularity_classification = Classification.create(name: 'Popularity')
 Category.create([
