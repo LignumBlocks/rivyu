@@ -27,14 +27,15 @@ The output must be a json with the following structure:
     \"hacks_list\": [
         {
             \"hack_title\": <a concise, engaging and descriptive title for the hack>,
-            \"brief_description\": <Markdown-formatted description for the hack, highlighting the specific financial benefit, how to apply it and the user conditions and resources needed>,
+            \"description\": <Markdown-formatted description for the hack, highlighting the specific financial benefit, how to apply it and the user conditions and resources needed>,
             \"hack_justification\": <Markdown-formatted explanation of why this was selected as a hack, highlighting key points with lists and bold emphasis on important findings>
         }
     ]
 }
 ```
 If no hacks are found, set 'are_hacks' to false and provide a reasoning explanation in 'justification.' Leave 'hacks_list' empty in this case. Make sure each identified hack in the list has a clear title and reasoned justification in Markdown format.",
-        'HACK_ADVICE': "You are an expert financial analyst. Review the following financial strategy:
+
+        'HACK_ADVICE_Old': "You are an expert financial analyst. Review the following financial strategy:
 [{hack_info}]\n\n---\n
 You need to qualify the proposed strategy as a simple financial advice or a complex financial hack.
 A financial hack is a practical strategy or technique that helps individuals optimize their finances, save money, increase income, or improve their overall economic situation. Hacks range from easily accessible tips to sophisticated strategies used by high-net-worth individuals.
@@ -44,53 +45,63 @@ A financial advice is usually more simple to implement, while a hack is more nov
 Provide your response only as a JSON, in the following format:
 ```json
 {
-     \"classification\": \"<Hack or Advice>\",
+     \"classification\": \"<It must be only one of the keywords 'Hack' or 'Advice'>\",
      \"explanation\": \"<A short explanation regarding the classification>\"
 }
 ```",
-        'HACK_ADVICE_No1': "I would like to establish a framework for consistently analyzing and categorizing a series of financial materials (articles, blog posts, reports, etc.). For each piece of content, please follow a two-step analysis based on the criteria below. This will help classify the content into its appropriate category of financial advice or financial hack, and then further categorize it by its relevant financial niche.
+        'HACK_ADVICE': "You are an expert financial analyst. Review the following financial strategy:
+[{hack_info}]\n\n---\n
+You need to qualify the proposed strategy as a financial advice or a financial hack.
 
-Step 1: Classification (Advice vs. Hack)
-Please evaluate each piece of content based on the following criteria to classify it as either financial advice or a financial hack:
+Definition
+Financial Advice: Tailored recommendations based on an individual's unique financial situation, goals, and circumstances, often provided by professionals.
 
-Purpose & Intent:
-Advice: Aims to provide sustainable, long-term financial guidance, based on established principles.
-Hack: Focuses on clever, quick solutions or workarounds that may not be widely applicable or could be risky.
-Risk & Ethics:
-Advice: Promotes responsible, ethical financial practices and gives a clear understanding of the associated risks.
-Hack: Involves unconventional or risky methods that could be legally or ethically questionable.
-Longevity vs. Short-Term Results:
-Advice: Advocates for strategies that benefit the reader in the long run, with an emphasis on gradual and sustained growth.
-Hack: Prioritizes immediate, short-term results that may not be sustainable over time.
-Scalability & Applicability:
-Advice: Offers solutions or strategies that are universally applicable across various financial situations.
-Hack: Applies only to specific scenarios and may not work universally, often exploiting gaps or shortcuts.
-Complexity & Transparency:
-Advice: Clear, transparent, easy to follow, and well-reasoned, with a solid rationale.
-Hack: May involve complex or hidden methods, relying on shortcuts or unconventional approaches that are not easily replicated.
-Step 2: Categorization by Financial Niche
-Once the classification is done, categorize the content into a specific financial niche based on the nature of the content. Below are common financial niches to consider when categorizing:
+Financial Hack: A one-size-fits-all shortcut or strategy aimed at immediate savings or optimization of a specific aspect of personal finance, often unconventional.
 
-Personal Finance: Content about budgeting, saving, managing debt, credit scores, emergency funds, etc.
-Investing: Topics related to stock market investments, mutual funds, ETFs, real estate, cryptocurrency, etc.
-Retirement Planning: Advice on pensions, 401(k) plans, IRAs, retirement savings strategies, Social Security, etc.
-Tax Planning: Strategies for minimizing taxes, tax deductions, credits, tax filing, tax avoidance, etc.
-Insurance & Risk Management: Advice on various types of insurance (health, life, property) and managing financial risks.
-Debt Management: Strategies for paying off debt, student loans, mortgages, and managing other liabilities.
-Financial Independence/Fire (FIRE): Content related to the Financial Independence, Retire Early movement, frugality, and early retirement strategies.
-If the content does not clearly fit into one of these categories, feel free to suggest an alternative niche or note that it does not neatly fit into the listed categories.
+Criteria for Classifying Financial Advice vs. Financial Hacks
+The goal is to classify whether content qualifies as financial advice or a financial hack based on the following criteria:
 
-Example Article/Section:
-\"One of the smartest ways to save money on your taxes is to open an offshore bank account in a tax-haven country. This allows you to shield your earnings from high tax rates and make your wealth grow faster without the interference of your home country’s tax authorities. Additionally, if you time your withdrawals correctly, you can avoid certain penalties and fees. However, it’s important to find the right jurisdiction, as some countries have stricter rules on foreign accounts than others.\"
+1. Personalization
+Financial Advice: Content is tailored to an individual's unique financial circumstances, goals, and risk tolerance.
+Financial Hack: Content provides general tips or strategies applicable to a broad audience without customization.
+2. Time Horizon
+Financial Advice: Focuses on long-term financial stability and planning.
+Financial Hack: Targets short-term gains or immediate optimizations.
+3. Depth of Explanation
+Financial Advice: Offers detailed reasoning, multiple scenarios, and an analysis of potential trade-offs and risks.
+Financial Hack: Provides straightforward and actionable steps with minimal depth or analysis.
+4. Ethics and Legality
+Financial Advice: Adheres to ethical and legal standards, often provided by professionals regulated by governing bodies.
+Financial Hack: May exploit loopholes or operate in gray areas but generally stays within legal bounds.
+5. Scalability
+Financial Advice: Universally applicable across various financial situations and contexts.
+Financial Hack: Effectiveness depends on specific, often localized or niche conditions.
+6. Outcome Measurement
+Financial Advice: Includes clear metrics or frameworks for measuring success and tracking progress.
+Financial Hack: Results are often subjective and focus on immediate impact without structured tracking.
+7. Risk Analysis
+Financial Advice: Identifies risks explicitly and provides strategies to mitigate them.
+Financial Hack: May briefly mention risks but lacks robust analysis or mitigation strategies.
+8. Educational Component
+Financial Advice: Educates the reader on broader financial principles or decision-making frameworks.
+Financial Hack: Focuses on actionable tips without broader educational context.
+9. Practical Feasibility
+Financial Advice: Accessible and practical for most individuals without significant prerequisites.
+Financial Hack: May require specific tools, conditions, or niche knowledge that limits broad applicability.
 
-Task for Each Follow-up Piece of Content:
-For every new article, section, or piece of content I provide, please perform the following two tasks:
+When evaluating an article or piece of content:
+- Review the content using the criteria outlined above.
+- Determine whether it aligns more strongly with the characteristics of financial advice or a financial hack.
+- Provide a justification for the classification based on the criteria.",
+        'HACK_ADVICE_STRUCT': "Your task is to extract the conclusions of the following analysis and return a json object.\n\nAnalysis:\n[{analysis}]\n---\n
+Maintain the markdown text style if possible. Provide the result as a JSON object in this format:\n
+```json
+{
+     \"is_hack\": <s boolean that is true if the classification is Hack; otherwise, if it is an Advice it should be false>,
+     \"justification\": <Markdown-formatted explanation regarding the classification as Hack or Advice>\"
+}
+```",
 
-Classify the content as either financial advice or a financial hack, based on the five criteria outlined above.
-Categorize the content into the appropriate financial niche (e.g., tax planning, investing, personal finance, retirement, etc.), and explain your reasoning for both the classification and the niche selection.
-Please provide a brief explanation of your classification and niche categorization for each piece of content, ensuring consistency in your analysis.
-
-Content:\n```\n[{hack_info}]\n```\n",
         'CHAIN_OF_THOUGHT': "You are an expert financial analyst. Review the following content:\nMetadata:\n```\n[{metadata}]\n```\nContent:\n```\n[{page_content}]\n```\n
 Analyze it step by step to identify any practical financial strategies or techniques that could help individuals optimize their finances, save money, increase income, or improve their overall economic situation. They should have measurable financial value, originality, clear applicability, legality, clear explanation and demonstrable impact.
 A financial hack is defined as:
