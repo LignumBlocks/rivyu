@@ -16,11 +16,11 @@ module Ai
       return [] unless hacks_in_article
 
       hacks_list.each do |hack|
-        hack_info = "#{hack['hack_title']}:\n#{hack['brief_description']}"
+        hack_info = "#{hack['hack_title']}:\n#{hack['description']}"
         hack_advice = hack_or_advice(hack_info)
-        Hack.create({ article: @article, init_title: hack['hack_title'], summary: hack['brief_description'],
-                      justification: hack['hack_justification'], is_advice: hack_advice['classification'] == 'Advice',
-                      advice_justification: hack_advice['explanation'] })
+        Hack.create({ article: @article, init_title: hack['hack_title'], summary: hack['description'],
+                      justification: hack['hack_justification'], is_advice: !hack_advice['is_hack'],
+                      advice_justification: hack_advice['justification'] })
       end
       hacks_list
     end
@@ -30,22 +30,15 @@ module Ai
     def hack_or_advice(hack_info)
       prompt = Ai::Prompts.prompts[:HACK_ADVICE]
       prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { hack_info: hack_info })
+      hack_advice_analysis = @model.run(prompt_text)
+      prompt = Ai::Prompts.prompts[:HACK_ADVICE_STRUCT]
+      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { analysis: hack_advice_analysis })
       result = @model.run(prompt_text)
       result = result.gsub('json', '').gsub('```', '').strip
       JSON.parse(result)
     end
 
     def extract_hacks
-      # prompt = Ai::Prompts.prompts[:CHAIN_OF_THOUGHT]
-      # prompt_text = Ai::HackProcessor.build_prompt_text(prompt,
-      #                                                   { metadata: @article.metadata, page_content: @article.content })
-      # chain_of_thought = @model.run(prompt_text)
-      # prompt = Ai::Prompts.prompts[:VERIFICATION_REVIEW]
-      # prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { analysis_output: chain_of_thought })
-      # review = @model.run(prompt_text)
-      # prompt = Ai::Prompts.prompts[:HACK_VERIFICATION]
-      # prompt_text = Ai::HackProcessor.build_prompt_text(prompt,
-      #                                                   { page_content: @article.content, analysis_output: review })
       prompt = Ai::Prompts.prompts[:HACK_DISCRIMINATION]
       prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { page_content: @article.content })
       result = @model.run(prompt_text)
