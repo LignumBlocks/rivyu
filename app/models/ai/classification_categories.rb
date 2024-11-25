@@ -1,6 +1,6 @@
 module Ai
   # classifications hash
-  class Classification
+  class ClassificationCategories
     def self.classifications_and_categories
       #  Hash with the structure:
       #  {
