@@ -9,6 +9,7 @@ class ProcessArticleJob < ApplicationJob
       hack_processor = Ai::HackProcessor.new(hack)
       hack_processor.extend_hack!
       hack_processor.classify_hack!
+      hack_processor.scale_hack!
     end
   end
 end
