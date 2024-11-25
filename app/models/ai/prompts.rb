@@ -188,12 +188,17 @@ Expected JSON structure:\n{\n    \"Extended Title\": \"<extended title>\",
 Don't add or remove words. Nothing should be in list format, only string. Provide your response only as a JSON object containing the structured information provided.",
 
         'COMPLEXITY_CLASSIFICATION': "Classify the financial hack into one of the following categories, based on its complexity, accessibility, and level of financial impact:\n
-1. *Accessible*:\n   - *Description*: Simple hacks that are easy to implement by most people without requiring extensive financial knowledge or initial investment. Designed for users with any level of income and experience.\n   - *Examples*: Saving small amounts regularly, reducing non-essential expenses.\n
+1. *Basic*:\n   - *Description*: Simple hacks that are easy to implement by most people without requiring extensive financial knowledge or initial investment. Designed for users with any level of income and experience.\n   - *Examples*: Saving small amounts regularly, reducing non-essential expenses.\n
 2. *Intermediate*:\n   - *Description*: Hacks that require some planning, basic financial knowledge, or a moderate initial investment. Useful for people with medium incomes or some experience in managing their money.\n   - *Examples*: Investing while carrying debt, simple retirement planning strategies.\n
 3. *Advanced*:\n   - *Description*: More complex hacks requiring advanced financial knowledge or considerable sources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures.\n   - *Examples*: Utilizing REITs and advanced tax strategies to maximize returns.\n
-## Brief summary:\n[{hack_summary}]\n---\n## Financial hack:\n---\n[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
-Provide your response only as a JSON object with the values as plain strings, no markdown; in the following format:\n```json\n
-{\n    \"category\": \"<Accessible, Intermediate or Advanced>\",\n    \"explanation\": \"<A short explanation regarding the classification>\",\n}\n```",
+## Financial hack:\n[{hack_description}]\n---\n
+Provide your response only as a JSON object, in the following format:
+```json
+{
+    \"category\": \"<Basic, Intermediate or Advanced>\",
+    \"explanation\": \"<A short explanation regarding the classification>\",
+}
+```",
 
         'FINANCIAL_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following financial categories state the applicable tags to the provided information.\n
 ## Financial categories:\n
@@ -208,7 +213,7 @@ Provide your response only as a JSON object with the values as plain strings, no
 - `Financial Planning and Analysis`: managing a company's financial health through analysis and strategic planning.
 - `Fintech and Emerging Technologies`: innovative technologies and their impact on the financial industry.
 - `Behavioral Finance`: investigates the psychological factors influencing investors' decisions and market dynamics.\n
-## Brief summary:\n[{hack_summary}]\n---\n## Financial hack:\n---\n[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
+## Financial hack:\n---\n[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
 If there is more than one category fitting then return them all. Provide your response only as a JSON object, in the following format:\n
 Example for more than one tag:\n```json
 [\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  },\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n\"breve explanation\": \"<A short explanation regarding the classification>\"\n  },\n  // ...\n]\n```

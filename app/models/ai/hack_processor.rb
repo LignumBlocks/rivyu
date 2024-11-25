@@ -5,6 +5,22 @@ module Ai
       @model = Ai::LlmHandler.new('gemini-1.5-flash-8b')
     end
 
+    def scale_hack!
+      scale = hack_scaling
+      category_name = scale['category']
+      explanation = scale['explanation']
+      classification_instance = Classification.find_by_name('Complexity Scale')
+      categories = classification_instance.categories
+      # Find the specific category by name within that classification
+      category_instance = categories.find_by(name: category_name)
+
+      HackCategory.create(
+        hack: @hack,
+        category: category_instance,
+        justification: explanation
+      )
+    end
+
     def extend_hack!
       free_description = hack_description('FREE')
       premium_description = hack_description('PREMIUM', free_description)
@@ -26,15 +42,17 @@ module Ai
 
     def classify_hack!
       classification_results = get_hack_classifications
-      classification_results.each_value do |classification_data|
+      classification_results.each do |classification_name, classification_data|
         next if classification_data.nil? # Skip if classification failed
 
         classification_data.each do |category_hash|
           category_name = category_hash['category']
           explanation = category_hash['explanation']
-          puts category_name
-          puts explanation
-          category_instance = Category.find_by_name(category_name)
+          classification_instance = Classification.find_by_name(classification_name)
+          categories = classification_instance.categories
+          # Find the specific category by name within that classification
+          category_instance = categories.find_by(name: category_name)
+
           HackCategory.create(
             hack: @hack,
             category: category_instance,
@@ -52,6 +70,15 @@ module Ai
     end
 
     private
+
+    def hack_scaling
+      description = "#{@hack.free_title}:\n\n#{@hack.description}"
+      prompt = Ai::Prompts.prompts[:COMPLEXITY_CLASSIFICATION]
+      prompt_text = Ai::HackProcessor.build_prompt_text(prompt, { hack_description: description })
+      result = @model.run(prompt_text)
+      result = result.gsub('json', '').gsub('```', '').strip
+      JSON.parse(result)
+    end
 
     def hack_description(prompt_code, analysis = '')
       prompt = if prompt_code == 'FREE'
@@ -113,7 +140,7 @@ module Ai
       format_hash = { hack_summary: @hack.summary, hack_description: free_description,
                       metadata: @hack.article.metadata }
       classifications = {}
-      class_and_cat_hash = Ai::Classification.classifications_and_categories
+      class_and_cat_hash = Ai::ClassificationCategories.classifications_and_categories
       class_and_cat_hash.each do |class_name, class_data|
         prompt_key = class_data[:type] == 'single_cat' ? :GENERIC_SINGLE_CATEGORY_CLASSIFICATION : :GENERIC_MULTI_CATEGORY_CLASSIFICATION
         prompt = Ai::Prompts.prompts[prompt_key]

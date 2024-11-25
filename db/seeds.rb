@@ -5,11 +5,11 @@
 #  { name: 'Investopedia', link: 'https://www.investopedia.com' }
 # ]
 
-sources = [
-  { name: 'Investopedia', link: 'https://www.investopedia.com' }
-]
+# sources = [
+#   { name: 'Investopedia', link: 'https://www.investopedia.com' }
+# ]
 
-sources.each { |source| Source.create(source) }
+# sources.each { |source| Source.create(source) }
 
 # # Crear clasificaciones
 # HackCategory.all.destroy_all
@@ -132,4 +132,13 @@ sources.each { |source| Source.create(source) }
 #                   { name: 'Unknown Literacy Level', description: 'When the required financial knowledge for the hack is unclear.',
 #                     classification: knowledge_level_classification }
 #                 ])
+hacks_scale = Classification.create(name: 'Complexity Scale')
+Category.create([
+                  { name: 'Basic', description: 'Simple hacks that are easy to implement by most people without requiring extensive financial knowledge or initial investment. Designed for users with any level of income and experience.',
+                    classification: hacks_scale },
+                  { name: 'Intermediate', description: 'Hacks that require some planning, basic financial knowledge, or a moderate initial investment. Useful for people with medium incomes or some experience in managing their money.',
+                    classification: hacks_scale },
+                  { name: 'Advanced', description: 'More complex hacks requiring advanced financial knowledge or considerable sources. Often involve tax strategies, investment in complex assets, or sophisticated legal structures.',
+                    classification: hacks_scale }
+                ])
 # load(Rails.root.join('db/seeds/development/hacks.rb')) if Rails.env.development?
