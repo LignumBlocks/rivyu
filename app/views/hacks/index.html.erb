@@ -28,6 +28,14 @@
                            { include_blank: "All Sources" },
                            class: "block bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
+
+            <div>
+              <%= f.select :with_scale,
+                           options_for_select(Category.scale_categories.pluck(:name, :id), params.dig(:q, :with_scale)),
+                           { include_blank: "All Scales" },
+                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+            </div>
+
           </div>
 
           <div class="flex flex-col gap-2">
@@ -156,7 +164,9 @@
         <th scope="col" class="px-0 py-3 text-center">
           Type
         </th>
-
+        <th scope="col" class="px-0 py-3 text-center">
+          Scale
+        </th>
         <th scope="col" class="px-0 py-3 text-center">
           Popularity
         </th>
@@ -196,6 +206,12 @@
           <td class="px-0 py-2 text-center ">
             <div class="inline-flex">
               <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.is_advice? ? "Advice" : "Hack" %></span>
+            </div>
+          </td>
+
+          <td class="px-0 py-2 text-center ">
+            <div class="inline-flex">
+              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.scale_categories.map(&:name).to_sentence %></span>
             </div>
           </td>
 

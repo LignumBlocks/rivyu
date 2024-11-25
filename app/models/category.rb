@@ -11,4 +11,5 @@ class Category < ApplicationRecord
   scope :implementation_categories, -> { where(classification_id: Classification.find_by_name('Implementation Difficulty').id) }
   scope :financial_categories, -> { where(classification_id: Classification.find_by_name('Financial Goals').id) }
   scope :knowledge_categories, -> { where(classification_id: Classification.find_by_name('Knowledge Level Required').id) }
+  scope :scale_categories, -> { where(classification_id: Classification.find_by_name('Complexity Scale').id) }
 end

@@ -11,7 +11,6 @@ module Ai
       explanation = scale['explanation']
       classification_instance = Classification.find_by_name('Complexity Scale')
       categories = classification_instance.categories
-      # Find the specific category by name within that classification
       category_instance = categories.find_by(name: category_name)
 
       HackCategory.create(

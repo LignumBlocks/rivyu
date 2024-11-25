@@ -36,7 +36,12 @@ class Hack < ApplicationRecord
     joins(categories: :hack_categories).merge(Category.knowledge_categories.where(id: id)).distinct
   end
 
+  def self.with_scale(id)
+    joins(categories: :hack_categories).merge(Category.scale_categories.where(id: id)).distinct
+  end
+
   def self.ransackable_scopes(auth_object = nil)
-    %i[ with_popularity with_financial_topic with_audience with_horizon with_risk with_implementation with_financial with_knowledge ]
+    %i[ with_popularity with_financial_topic with_audience with_horizon with_risk with_implementation with_financial
+        with_knowledge with_scale ]
   end
 end
