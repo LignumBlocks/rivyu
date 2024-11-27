@@ -20,100 +20,146 @@
               <%= f.select :is_advice_eq,
                            options_for_select([["Only Hacks", false], ["Only Advices", true]], params.dig(:q, :is_advice_eq)),
                            { include_blank: "All Type" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+                           class: "bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
-            <div>
+            <div class="">
               <%= f.select :source_id_eq,
                            options_for_select(Source.pluck(:name, :id), params.dig(:q, :source_id_eq)),
                            { include_blank: "All Sources" },
-                           class: "block bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+                           class: "block bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
             </div>
 
             <div>
-              <%= f.select :with_scale,
-                           options_for_select(Category.scale_categories.pluck(:name, :id), params.dig(:q, :with_scale)),
-                           { include_blank: "All Scales" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= f.select :with_popularity,
-                           options_for_select(Category.popularity_categories.pluck(:name, :id), params.dig(:q, :with_popularity)),
-                           { include_blank: "All Popularity" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-
-            <div>
-              <%= f.select :with_financial_topic,
-                           options_for_select(Category.financial_topic_categories.pluck(:name, :id), params.dig(:q, :with_financial_topic)),
-                           { include_blank: "All Financial Topics" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= f.select :with_audience,
-                           options_for_select(Category.audience_categories.pluck(:name, :id), params.dig(:q, :with_audience)),
-                           { include_blank: "All Audiences" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-
-            <div>
-              <%= f.select :with_horizon,
-                           options_for_select(Category.horizon_categories.pluck(:name, :id), params.dig(:q, :with_horizon)),
-                           { include_blank: "All Time Horizon" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= f.select :with_risk,
-                           options_for_select(Category.risk_categories.pluck(:name, :id), params.dig(:q, :with_risk)),
-                           { include_blank: "All Risks" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-
-            <div>
-              <%= f.select :with_implementation,
-                           options_for_select(Category.implementation_categories.pluck(:name, :id), params.dig(:q, :with_implementation)),
-                           { include_blank: "All Implementations" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-scales',
+                dropdown_menu_id: 'dropdownMenu-scales',
+                label: 'All Scales',
+                collection: Category.scale_categories,
+                filter_name: 'q[with_scale_ids][]',
+                field_prefix: 'scale',
+                selected_items: params.dig(:q, :with_scale_ids)
+              } %>
             </div>
 
           </div>
 
           <div class="flex flex-col gap-2">
             <div>
-              <%= f.select :with_financial,
-                           options_for_select(Category.financial_categories.pluck(:name, :id), params.dig(:q, :with_financial)),
-                           { include_blank: "All Financials" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-popularity',
+                dropdown_menu_id: 'dropdownMenu-popularity',
+                label: 'All Popularity',
+                collection: Category.popularity_categories,
+                filter_name: 'q[with_popularity_ids][]',
+                field_prefix: 'popularity',
+                selected_items: params.dig(:q, :with_popularity_ids)
+              } %>
             </div>
 
             <div>
-              <%= f.select :with_knowledge,
-                           options_for_select(Category.knowledge_categories.pluck(:name, :id), params.dig(:q, :with_knowledge)),
-                           { include_blank: "All Knowledge" },
-                           class: "bg-gray-50 mt-2 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-financial_topics',
+                dropdown_menu_id: 'dropdownMenu-financial_topics',
+                label: 'All Financial topics',
+                collection: Category.financial_topic_categories,
+                filter_name: 'q[with_financial_topic_ids][]',
+                field_prefix: 'financial_topic',
+                selected_items: params.dig(:q, :with_financial_topic_ids)
+              } %>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-audiences',
+                dropdown_menu_id: 'dropdownMenu-audiences',
+                label: 'All Audiences',
+                collection: Category.audience_categories,
+                filter_name: 'q[with_audience_ids][]',
+                field_prefix: 'audience',
+                selected_items: params.dig(:q, :with_audience_ids)
+              } %>
+            </div>
+
+
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-horizon',
+                dropdown_menu_id: 'dropdownMenu-horizon',
+                label: 'All Time Horizon',
+                collection: Category.horizon_categories,
+                filter_name: 'q[with_horizon_ids][]',
+                field_prefix: 'horizon',
+                selected_items: params.dig(:q, :with_horizon_ids)
+              } %>
+
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-risks',
+                dropdown_menu_id: 'dropdownMenu-risks',
+                label: 'All Risks',
+                collection: Category.risk_categories,
+                filter_name: 'q[with_risk_ids][]',
+                field_prefix: 'risk',
+                selected_items: params.dig(:q, :with_risk_ids)
+              } %>
+            </div>
+
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-implementations',
+                dropdown_menu_id: 'dropdownMenu-implementations',
+                label: 'All Implementations',
+                collection: Category.implementation_categories,
+                filter_name: 'q[with_implementation_ids][]',
+                field_prefix: 'implementation',
+                selected_items: params.dig(:q, :with_implementation_ids)
+              } %>
+            </div>
+
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-financials',
+                dropdown_menu_id: 'dropdownMenu-financials',
+                label: 'All Financials',
+                collection: Category.financial_categories,
+                filter_name: 'q[with_financial_ids][]',
+                field_prefix: 'financial',
+                selected_items: params.dig(:q, :with_financial_ids)
+              } %>
+            </div>
+
+            <div>
+              <%= render partial: 'dropdown_filter', locals: {
+                dropdown_button_id: 'dropdownButton-knowledge',
+                dropdown_menu_id: 'dropdownMenu-knowledge',
+                label: 'All Knowledge',
+                collection: Category.knowledge_categories,
+                filter_name: 'q[with_knowledge_ids][]',
+                field_prefix: 'knowledge',
+                selected_items: params.dig(:q, :with_knowledge_ids)
+              } %>
             </div>
           </div>
 
 
           <div class="flex flex-col gap-4">
-            <div class="mt-2">
+            <div class="">
               <%= f.submit "Apply filters", class: "btn-sm btn-success text-white text-sm rounded" %>
             </div>
-            <div class="mt-2">
+            <div class="">
               <button type="button" class="btn-sm btn-danger text-white text-sm rounded"
                       onclick="cleanFilters('filtersForm')">Clean filters
               </button>
             </div>
-
           </div>
         </div>
     <% end %>
@@ -314,6 +360,26 @@
         });
          form.submit();
     }
+
+</script>
+
+<script>
+    // Toggle dropdown visibility
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        dropdown.classList.toggle("hidden");
+    }
+
+    // Hide dropdown on click outside, but ignore clicks on dropdown itself
+    document.addEventListener("click", (event) => {
+        document.querySelectorAll("[id^='dropdownMenu']").forEach((dropdown) => {
+            const buttonId = dropdown.id.replace("dropdownMenu", "dropdownButton");
+            const button = document.getElementById(buttonId);
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    });
 
 </script>
 
