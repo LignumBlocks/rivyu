@@ -4,6 +4,9 @@ class Hack < ApplicationRecord
   has_many :hack_categories
   has_many :categories, through: :hack_categories
 
+  has_many :superhack_sources
+  has_many :superhacks, through: :superhack_sources
+
   def self.with_popularity_ids(*ids)
     popular_category_ids = Category.popularity_categories.where(id: ids).select(:id)
     joins(:hack_categories).where(hack_categories: { category_id: popular_category_ids }).distinct

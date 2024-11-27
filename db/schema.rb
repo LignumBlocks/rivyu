@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_27_213803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["classification_id", "name"], name: "index_categories_on_classification_id_and_name"
     t.index ["classification_id"], name: "index_categories_on_classification_id"
   end
 
@@ -78,6 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_hack_categories_on_category_id"
+    t.index ["hack_id", "category_id"], name: "index_hack_categories_on_hack_id_and_category_id"
     t.index ["hack_id"], name: "index_hack_categories_on_hack_id"
   end
 
@@ -98,9 +100,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
     t.string "premium_title"
     t.text "description"
     t.string "main_goal"
-    t.boolean "is_advise", default: false
-    t.string "advise_justification", default: ""
+    t.boolean "is_advice", default: false
+    t.string "advice_justification", default: ""
     t.index ["article_id"], name: "index_hacks_on_article_id"
+    t.index ["description"], name: "index_hacks_on_description"
+    t.index ["is_advice"], name: "index_hacks_on_is_advice"
+    t.index ["main_goal"], name: "index_hacks_on_main_goal"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -119,6 +124,35 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
   create_table "sources", force: :cascade do |t|
     t.string "name"
     t.string "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "superhack_categories", force: :cascade do |t|
+    t.bigint "superhack_id", null: false
+    t.bigint "category_id", null: false
+    t.text "justification"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_superhack_categories_on_category_id"
+    t.index ["superhack_id"], name: "index_superhack_categories_on_superhack_id"
+  end
+
+  create_table "superhack_sources", force: :cascade do |t|
+    t.bigint "superhack_id", null: false
+    t.bigint "hack_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hack_id"], name: "index_superhack_sources_on_hack_id"
+    t.index ["superhack_id"], name: "index_superhack_sources_on_superhack_id"
+  end
+
+  create_table "superhacks", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.text "implementation_steps"
+    t.text "expected_results"
+    t.text "risks_and_mitigation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -143,4 +177,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_133842) do
   add_foreign_key "hack_categories", "categories"
   add_foreign_key "hack_categories", "hacks"
   add_foreign_key "hacks", "articles"
+  add_foreign_key "superhack_categories", "categories"
+  add_foreign_key "superhack_categories", "superhacks"
+  add_foreign_key "superhack_sources", "hacks"
+  add_foreign_key "superhack_sources", "superhacks"
 end
