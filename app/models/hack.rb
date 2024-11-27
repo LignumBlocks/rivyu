@@ -5,41 +5,48 @@ class Hack < ApplicationRecord
   has_many :categories, through: :hack_categories
 
   def self.with_popularity_ids(*ids)
-    joins(categories: :hack_categories)
-      .merge(Category.popularity_categories.where(id: ids))
-      .distinct
+    popular_category_ids = Category.popularity_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: popular_category_ids }).distinct
   end
 
   def self.with_financial_topic_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.financial_topic_categories.where(id: ids)).distinct
+    financial_topic_category_ids = Category.financial_topic_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: financial_topic_category_ids }).distinct
   end
 
   def self.with_audience_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.audience_categories.where(id: ids)).distinct
+    audience_category_ids = Category.audience_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: audience_category_ids }).distinct
   end
 
   def self.with_horizon_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.horizon_categories.where(id: ids)).distinct
+    horizon_category_ids = Category.horizon_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: horizon_category_ids }).distinct
   end
 
   def self.with_risk_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.risk_categories.where(id: ids)).distinct
+    risk_category_ids = Category.risk_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: risk_category_ids }).distinct
   end
 
   def self.with_implementation_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.implementation_categories.where(id: ids)).distinct
+    implementation_category_ids = Category.implementation_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: implementation_category_ids }).distinct
   end
 
   def self.with_financial_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.financial_categories.where(id: ids)).distinct
+    financial_category_ids = Category.financial_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: financial_category_ids }).distinct
   end
 
   def self.with_knowledge_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.knowledge_categories.where(id: ids)).distinct
+    knowledge_category_ids = Category.knowledge_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: knowledge_category_ids }).distinct
   end
 
   def self.with_scale_ids(*ids)
-    joins(categories: :hack_categories).merge(Category.scale_categories.where(id: ids)).distinct
+    scale_category_ids = Category.scale_categories.where(id: ids).select(:id)
+    joins(:hack_categories).where(hack_categories: { category_id: scale_category_ids }).distinct
   end
 
   def self.ransackable_scopes(auth_object = nil)
