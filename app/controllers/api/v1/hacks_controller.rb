@@ -2,7 +2,21 @@ class Api::V1::HacksController < Api::BaseController
   def index
     filters = combined_filters
     q = Hack.ransack(filters)
-    render json: q.result.distinct, status: :ok
+
+    limit = params[:limit] || 10
+    offset = params[:offset] || 0
+
+    records = q.result.distinct.offset(offset).limit(limit)
+    total_count = q.result.distinct.count
+
+    render json: {
+      hacks: records,
+      pagination: {
+        limit: limit.to_i,
+        offset: offset.to_i,
+        total_count: total_count
+      }
+    }, status: :ok
   end
 
   def synchronize
