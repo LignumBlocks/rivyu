@@ -41,9 +41,9 @@ class HacksController < ApplicationController
       params.dig(:q, :with_knowledge_ids)
     ].compact.flatten.uniq
 
-    {
-      is_advice_eq: params[:q][:is_advice_eq],
-      source_id_eq: params[:q][:source_id_eq],
+    filters = {
+      is_advice_eq: params.dig(:q, :is_advice_eq),
+      source_id_eq: params.dig(:q, :source_id_eq),
       hack_categories_category_id_in: combined_filter_ids
     }
   end
