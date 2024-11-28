@@ -5,7 +5,7 @@ module Api
     before_action :authenticate_api_key
 
     def authenticate_api_key
-      return if request.headers['x-api-key'] != ENV.fetch('X-API-KEY')
+      return if request.headers['x-api-key'] != ENV.fetch('X_API_KEY')
 
       render json: { message: 'Not authorized' }, status: 401 and return
     end
