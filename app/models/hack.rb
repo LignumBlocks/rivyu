@@ -5,4 +5,8 @@ class Hack < ApplicationRecord
   has_many :categories, through: :hack_categories
   has_many :superhack_sources
   has_many :superhacks, through: :superhack_sources
+
+  scope :synchronized, -> { where(synchronized: true) }
+  scope :unsynchronized, -> { where(synchronized: false) }
+  scope :completed, -> { where(completed: true) }
 end

@@ -21,6 +21,15 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      get '/hacks', to: 'hacks#index'
+      post '/hacks/synchronize', to: 'hacks#synchronize'
+      get '/hacks/:id', to: 'hacks#index'
+    end
+    match '*unmatched', to: 'base#render_not_found', via: :all
+  end
+
   get '/pages/:page' => 'pages#show', as: :page
 
   match '/404', to: 'errors#not_found', via: :all
