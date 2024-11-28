@@ -1,0 +1,2 @@
+class HackValidationSuperhack < ApplicationRecord
+end

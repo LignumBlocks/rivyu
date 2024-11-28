@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_27_213803) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_28_142343) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,6 +83,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_213803) do
     t.index ["hack_id"], name: "index_hack_categories_on_hack_id"
   end
 
+  create_table "hack_validation_superhacks", force: :cascade do |t|
+    t.integer "id_hack_compared_first"
+    t.integer "id_hack_compared_second"
+    t.boolean "has_superhack"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "hacks", force: :cascade do |t|
     t.bigint "article_id", null: false
     t.text "summary"
@@ -102,6 +110,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_213803) do
     t.string "main_goal"
     t.boolean "is_advice", default: false
     t.string "advice_justification", default: ""
+    t.boolean "synchronized", default: false
+    t.boolean "completed", default: false
     t.index ["article_id"], name: "index_hacks_on_article_id"
     t.index ["description"], name: "index_hacks_on_description"
     t.index ["is_advice"], name: "index_hacks_on_is_advice"
