@@ -1,5 +1,6 @@
 module Api
   class BaseController < ActionController::API
+    include Pagy::Backend
     rescue_from ActionController::RoutingError, with: :render_not_found
 
     before_action :authenticate_api_key
