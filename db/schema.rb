@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_28_142343) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_06_083023) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,6 +112,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_28_142343) do
     t.string "advice_justification", default: ""
     t.boolean "synchronized", default: false
     t.boolean "completed", default: false
+    t.boolean "sent_to_python", default: false
     t.index ["article_id"], name: "index_hacks_on_article_id"
     t.index ["description"], name: "index_hacks_on_description"
     t.index ["is_advice"], name: "index_hacks_on_is_advice"

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/hacks', to: 'hacks#index'
+      get '/custom-hacks', to: 'hacks#custom_index'
+      post '/hacks-sent-to-python', to: 'hacks#mark_sent_to_python'
       post '/hacks/synchronize', to: 'hacks#synchronize'
       get '/hacks/:id', to: 'hacks#index'
     end
