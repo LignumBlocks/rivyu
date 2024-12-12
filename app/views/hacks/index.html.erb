@@ -82,7 +82,6 @@
               } %>
             </div>
 
-
             <div>
               <%= render partial: 'dropdown_filter', locals: {
                 dropdown_button_id: 'dropdownButton-horizon',
@@ -150,7 +149,6 @@
             </div>
           </div>
 
-
           <div class="flex flex-col gap-4">
             <div class="">
               <%= f.submit "Apply filters", class: "btn-sm btn-success text-white text-sm rounded" %>
@@ -164,8 +162,68 @@
         </div>
     <% end %>
    <div>
-   </div>
-    </div>
+  </div>
+  </div>
+    <span class="flex flex-wrap gap-2 mt-4">
+      <% params[:q]&.each do |key, value| %>
+        <% next if value.blank? %>
+
+        <% if key.to_s == "is_advice_eq"%>
+          <% text = value == "true" ? "Only Advice" : "Only Hacks"%>
+          <div class="inline-flex flex-wrap gap-4">
+              <div class="inline-flex flex-nowrap items-center bg-white border border-gray-200 rounded-full p-1.5 text-sm dark:bg-neutral-900 dark:border-neutral-700">
+                <div class="whitespace-nowrap pl-2 text-gray-800 dark:text-white">
+                  <%= text %>
+                </div>
+                <div class="ms-2.5 inline-flex justify-center items-center rounded-full text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-neutral-700/50 dark:hover:bg-neutral-700 dark:text-neutral-400 cursor-pointer"
+                     onclick="clearSelection('q_is_advice_eq')">
+                  <svg class="shrink-0 size-3 p-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+        <% elsif key.to_s == "source_id_eq"%>
+          <div class="inline-flex flex-wrap gap-4">
+              <div class="inline-flex flex-nowrap items-center bg-white border border-gray-200 rounded-full p-1.5 text-sm dark:bg-neutral-900 dark:border-neutral-700">
+                <div class="whitespace-nowrap pl-2 text-gray-800 dark:text-white">
+                  <%= Source.find(value).name %>
+                </div>
+                <div class="ms-2.5 inline-flex justify-center items-center rounded-full text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-neutral-700/50 dark:hover:bg-neutral-700 dark:text-neutral-400 cursor-pointer"
+                     onclick="clearSelection('q_source_id_eq')">
+                  <svg class="shrink-0 size-3 p-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+        <% else %>
+          <% key_humanized = key.split('_') %>
+            <% key_humanized.pop %>
+            <% key_humanized = key_humanized.join('_').humanize %>
+            <% categories = Category.where(id: value) %>
+            <% categories.each do |category| %>
+              <div class="inline-flex flex-wrap gap-4">
+                <div class="inline-flex flex-nowrap items-center bg-white border border-gray-200 rounded-full p-1.5 text-sm dark:bg-neutral-900 dark:border-neutral-700">
+                  <div class="whitespace-nowrap pl-2 text-gray-800 dark:text-white">
+                    <%= category.name %>
+                  </div>
+                  <div class="ms-2.5 inline-flex justify-center items-center rounded-full text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:bg-neutral-700/50 dark:hover:bg-neutral-700 dark:text-neutral-400 cursor-pointer"
+                       onclick="handleChipClose(<%= category.id %>)">
+                    <svg class="shrink-0 size-3 p-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+    </span>
+  </div>
     <div class="flex justify-end pt-6">
       <nav class="flex gap-4 p-2 pl-6 px-4 items-center justify-end flex-column flex-wrap md:flex-row justify-between" aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
@@ -395,5 +453,23 @@
     });
 
 </script>
+
+<script>
+    function handleChipClose(categoryId) {
+        console.log('Category ID:', categoryId);
+        const form = document.getElementById('filtersForm');
+        const checkbox = document.getElementById(`category-${categoryId}`);
+        checkbox.checked = !checkbox.checked;
+        form.submit();
+    }
+
+    function clearSelection(selector) {
+        const selectElement = document.getElementById(selector);
+        selectElement.value = '';
+        const form = document.getElementById('filtersForm');
+        form.submit();
+    }
+</script>
+
 
 
