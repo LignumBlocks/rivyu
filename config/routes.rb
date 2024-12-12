@@ -28,6 +28,8 @@ Rails.application.routes.draw do
       post '/hacks-sent-to-python', to: 'hacks#mark_sent_to_python'
       post '/hacks/synchronize', to: 'hacks#synchronize'
       get '/hacks/:id', to: 'hacks#index'
+      get 'superhacks/categories', to: 'superhacks#categories'
+      post 'superhacks/create', to: 'superhacks#create'
     end
     match '*unmatched', to: 'base#render_not_found', via: :all
   end
