@@ -410,6 +410,8 @@
 
 <script>
     function cleanFilters(formId) {
+        const spinner = document.getElementById("loading-spinner");
+        spinner.classList.remove("hidden");
         const form = document.getElementById(formId);
         if (!form) {
             console.error(`Formulario con ID '${formId}' no encontrado.`);
@@ -456,7 +458,8 @@
 
 <script>
     function handleChipClose(categoryId) {
-        console.log('Category ID:', categoryId);
+        const spinner = document.getElementById("loading-spinner");
+        spinner.classList.remove("hidden");
         const form = document.getElementById('filtersForm');
         const checkbox = document.getElementById(`category-${categoryId}`);
         checkbox.checked = !checkbox.checked;
@@ -464,6 +467,8 @@
     }
 
     function clearSelection(selector) {
+        const spinner = document.getElementById("loading-spinner");
+        spinner.classList.remove("hidden");
         const selectElement = document.getElementById(selector);
         selectElement.value = '';
         const form = document.getElementById('filtersForm');
