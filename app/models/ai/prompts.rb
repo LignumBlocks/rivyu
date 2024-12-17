@@ -221,20 +221,20 @@ Example for one tag:\n```json
 [\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  }\n]\n```",
 
         'GENERIC_SINGLE_CATEGORY_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following '[{class_name}]' categories evaluate the financial hack taking into account: \"[{classification_description}]\".\n
-##[{class_name}] categories:
+## [{class_name}] categories:
 [{explained_categories}]\n
-## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
+## Financial hack:\n---\n[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
 Choose the more accurate category for the provided information.
 Provide your response only as a JSON object, in the following format:\n```json\n
 {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\",\n}\n```",
 
         'GENERIC_MULTI_CATEGORY_CLASSIFICATION': "Bellow you will be provided with a financial hack. According to the following '[{class_name}]' categories evaluate the financial hack taking into account: \"[{classification_description}]\".\n
-##[{class_name}] categories:
+## [{class_name}] categories:
 [{explained_categories}]\n
-## Financial hack:\n---\n\[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
+## Financial hack:\n---\n[{hack_description}]\n---\n## Related metadata:\n```\n[{metadata}]\n```\n
 State the applicable tags to the provided information. If there is more than one category fitting then return them all. Provide your response only as a JSON object, in the following format:\n
 Example for more than one tag:\n```json
-[\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  },\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n\"breve explanation\": \"<A short explanation regarding the classification>\"\n  },\n  // ...\n]\n```
+[\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  },\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n\"explanation\": \"<A short explanation regarding the classification>\"\n  },\n  // ...\n]\n```
 Example for one tag:\n```json
 [\n  {\n    \"category\": \"<category with the same name as it was listed>\",\n    \"explanation\": \"<A short explanation regarding the classification>\"\n  }\n]\n```"
 
