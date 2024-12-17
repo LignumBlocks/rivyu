@@ -43,4 +43,12 @@ class Category < ApplicationRecord
   scope :scale_categories, -> {
     where(classification_id: Classification.where(name: 'Complexity Scale').pluck(:id))
   }
+
+  scope :targets_categories, -> {
+    where(classification_id: Classification.where(name: 'Target User Profile').pluck(:id))
+  }
+
+  scope :goals_categories, -> {
+    where(classification_id: Classification.where(name: 'Goals').pluck(:id))
+  }
 end

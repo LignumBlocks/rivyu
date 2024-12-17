@@ -14,85 +14,19 @@
   <div class="p-6">
     <div>
       <%= search_form_for @q, url: superhacks_path, method: :get, id: "filtersForm" do |f| %>
-        <div class="grid grid-cols-6 gap-4">
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-popularity',
-                dropdown_menu_id: 'dropdownMenu-popularity',
-                label: 'All Popularity',
-                collection: Category.popularity_categories.for_super_hacks,
-                filter_name: 'q[with_popularity_ids][]',
-                field_prefix: 'popularity',
-                selected_items: params.dig(:q, :with_popularity_ids)
-              } %>
-            </div>
-
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-financial_topics',
-                dropdown_menu_id: 'dropdownMenu-financial_topics',
-                label: 'All Financial topics',
-                collection: Category.financial_topic_categories.for_super_hacks,
-                filter_name: 'q[with_financial_topic_ids][]',
-                field_prefix: 'financial_topic',
-                selected_items: params.dig(:q, :with_financial_topic_ids)
-              } %>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-audiences',
-                dropdown_menu_id: 'dropdownMenu-audiences',
-                label: 'All Audiences',
-                collection: Category.audience_categories.for_super_hacks,
-                filter_name: 'q[with_audience_ids][]',
-                field_prefix: 'audience',
-                selected_items: params.dig(:q, :with_audience_ids)
-              } %>
-            </div>
-
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-horizon',
-                dropdown_menu_id: 'dropdownMenu-horizon',
-                label: 'All Time Horizon',
-                collection: Category.horizon_categories.for_super_hacks,
-                filter_name: 'q[with_horizon_ids][]',
-                field_prefix: 'horizon',
-                selected_items: params.dig(:q, :with_horizon_ids)
-              } %>
-
-            </div>
-          </div>
-
+        <div class="grid grid-cols-4 gap-4">
           <div class="flex flex-col gap-2">
             <div>
               <%= render partial: 'dropdown_filter', locals: {
                 dropdown_button_id: 'dropdownButton-risks',
                 dropdown_menu_id: 'dropdownMenu-risks',
-                label: 'All Risks',
-                collection: Category.risk_categories.for_super_hacks,
-                filter_name: 'q[with_risk_ids][]',
+                label: 'All Targets',
+                collection: Category.targets_categories.for_super_hacks,
+                filter_name: 'q[with_target_ids][]',
                 field_prefix: 'risk',
-                selected_items: params.dig(:q, :with_risk_ids)
+                selected_items: params.dig(:q, :with_target_ids)
               } %>
             </div>
-
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-implementations',
-                dropdown_menu_id: 'dropdownMenu-implementations',
-                label: 'All Implementations',
-                collection: Category.implementation_categories.for_super_hacks,
-                filter_name: 'q[with_implementation_ids][]',
-                field_prefix: 'implementation',
-                selected_items: params.dig(:q, :with_implementation_ids)
-              } %>
-            </div>
-
           </div>
 
           <div class="flex flex-col gap-2">
@@ -100,36 +34,21 @@
               <%= render partial: 'dropdown_filter', locals: {
                 dropdown_button_id: 'dropdownButton-financials',
                 dropdown_menu_id: 'dropdownMenu-financials',
-                label: 'All Financials',
-                collection: Category.financial_categories.for_super_hacks,
-                filter_name: 'q[with_financial_ids][]',
+                label: 'All Goals',
+                collection: Category.goals_categories.for_super_hacks,
+                filter_name: 'q[with_goal_ids][]',
                 field_prefix: 'financial',
-                selected_items: params.dig(:q, :with_financial_ids)
-              } %>
-            </div>
-
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-knowledge',
-                dropdown_menu_id: 'dropdownMenu-knowledge',
-                label: 'All Knowledge',
-                collection: Category.knowledge_categories.for_super_hacks,
-                filter_name: 'q[with_knowledge_ids][]',
-                field_prefix: 'knowledge',
-                selected_items: params.dig(:q, :with_knowledge_ids)
+                selected_items: params.dig(:q, :with_goal_ids)
               } %>
             </div>
           </div>
 
-          <div class="flex flex-col gap-4">
-            <div class="">
-              <%= f.submit "Apply filters", class: "btn-sm btn-success text-white text-sm rounded" %>
-            </div>
-            <div class="">
-              <button type="button" class="btn-sm btn-danger text-white text-sm rounded"
-                      onclick="cleanFilters('filtersForm')">Clean filters
-              </button>
-            </div>
+          <div class="flex flex-row gap-4">
+            <%= f.submit "Apply filters", class: "btn-sm btn-success text-white text-sm rounded" %>
+            <button type="button" class="btn-sm btn-danger text-white text-sm rounded"
+                    onclick="cleanFilters('filtersForm')">
+              Clean filters
+            </button>
           </div>
         </div>
     <% end %>
@@ -300,7 +219,7 @@
 
           <td class="px-0 py-2 text-center ">
             <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.risk_categories.map(&:name).to_sentence %></span>
+              <a href="http://"></a>
             </div>
           </td>
 
