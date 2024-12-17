@@ -31,6 +31,8 @@ Rails.application.routes.draw do
       get '/hacks/:id', to: 'hacks#index'
       get 'superhacks/categories', to: 'superhacks#categories'
       post 'superhacks/create', to: 'superhacks#create'
+      get 'superhacks/combined-hacks', to: 'superhacks#combined_hacks'
+      post 'superhacks/save-combined-hacks', to: 'superhacks#save_combined_hacks'
     end
     match '*unmatched', to: 'base#render_not_found', via: :all
   end

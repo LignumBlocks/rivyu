@@ -1,0 +1,2 @@
+class CombinedHack < ApplicationRecord
+end
