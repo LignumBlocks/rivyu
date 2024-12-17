@@ -1,7 +1,7 @@
 <div class="relative overflow-x-auto mb-8 ">
   <div class="flex items-center justify-between flex-column pl-6 flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
     <div class="">
-      <% breadcrumbs = [["Hacks", hacks_path]]%>
+      <% breadcrumbs = [["Superhacks", superhacks_path]]%>
       <%= render partial: "layouts/breadcrumbs", locals: { breadcrumbs: breadcrumbs } %>
     </div>
     <div class="flex items-center justify-end flex-column flex-wrap md:flex-row md:space-y-0 bg-white dark:bg-gray-900">
@@ -13,43 +13,15 @@
 
   <div class="p-6">
     <div>
-      <%= search_form_for @q, url: hacks_path, method: :get, id: "filtersForm" do |f| %>
+      <%= search_form_for @q, url: superhacks_path, method: :get, id: "filtersForm" do |f| %>
         <div class="grid grid-cols-6 gap-4">
-          <div class="flex flex-col gap-2">
-            <div>
-              <%= f.select :is_advice_eq,
-                           options_for_select([["Only Hacks", false], ["Only Advices", true]], params.dig(:q, :is_advice_eq)),
-                           { include_blank: "All Type" },
-                           class: "bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-            <div class="">
-              <%= f.select :source_id_eq,
-                           options_for_select(Source.pluck(:name, :id), params.dig(:q, :source_id_eq)),
-                           { include_blank: "All Sources" },
-                           class: "block bg-gray-50 border border-gray-300 text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" %>
-            </div>
-
-            <div>
-              <%= render partial: 'dropdown_filter', locals: {
-                dropdown_button_id: 'dropdownButton-scales',
-                dropdown_menu_id: 'dropdownMenu-scales',
-                label: 'All Scales',
-                collection: Category.scale_categories.for_hacks,
-                filter_name: 'q[with_scale_ids][]',
-                field_prefix: 'scale',
-                selected_items: params.dig(:q, :with_scale_ids)
-              } %>
-            </div>
-
-          </div>
-
           <div class="flex flex-col gap-2">
             <div>
               <%= render partial: 'dropdown_filter', locals: {
                 dropdown_button_id: 'dropdownButton-popularity',
                 dropdown_menu_id: 'dropdownMenu-popularity',
                 label: 'All Popularity',
-                collection: Category.popularity_categories.for_hacks,
+                collection: Category.popularity_categories.for_super_hacks,
                 filter_name: 'q[with_popularity_ids][]',
                 field_prefix: 'popularity',
                 selected_items: params.dig(:q, :with_popularity_ids)
@@ -61,7 +33,7 @@
                 dropdown_button_id: 'dropdownButton-financial_topics',
                 dropdown_menu_id: 'dropdownMenu-financial_topics',
                 label: 'All Financial topics',
-                collection: Category.financial_topic_categories.for_hacks,
+                collection: Category.financial_topic_categories.for_super_hacks,
                 filter_name: 'q[with_financial_topic_ids][]',
                 field_prefix: 'financial_topic',
                 selected_items: params.dig(:q, :with_financial_topic_ids)
@@ -75,7 +47,7 @@
                 dropdown_button_id: 'dropdownButton-audiences',
                 dropdown_menu_id: 'dropdownMenu-audiences',
                 label: 'All Audiences',
-                collection: Category.audience_categories.for_hacks,
+                collection: Category.audience_categories.for_super_hacks,
                 filter_name: 'q[with_audience_ids][]',
                 field_prefix: 'audience',
                 selected_items: params.dig(:q, :with_audience_ids)
@@ -87,7 +59,7 @@
                 dropdown_button_id: 'dropdownButton-horizon',
                 dropdown_menu_id: 'dropdownMenu-horizon',
                 label: 'All Time Horizon',
-                collection: Category.horizon_categories.for_hacks,
+                collection: Category.horizon_categories.for_super_hacks,
                 filter_name: 'q[with_horizon_ids][]',
                 field_prefix: 'horizon',
                 selected_items: params.dig(:q, :with_horizon_ids)
@@ -102,7 +74,7 @@
                 dropdown_button_id: 'dropdownButton-risks',
                 dropdown_menu_id: 'dropdownMenu-risks',
                 label: 'All Risks',
-                collection: Category.risk_categories.for_hacks,
+                collection: Category.risk_categories.for_super_hacks,
                 filter_name: 'q[with_risk_ids][]',
                 field_prefix: 'risk',
                 selected_items: params.dig(:q, :with_risk_ids)
@@ -114,7 +86,7 @@
                 dropdown_button_id: 'dropdownButton-implementations',
                 dropdown_menu_id: 'dropdownMenu-implementations',
                 label: 'All Implementations',
-                collection: Category.implementation_categories.for_hacks,
+                collection: Category.implementation_categories.for_super_hacks,
                 filter_name: 'q[with_implementation_ids][]',
                 field_prefix: 'implementation',
                 selected_items: params.dig(:q, :with_implementation_ids)
@@ -129,7 +101,7 @@
                 dropdown_button_id: 'dropdownButton-financials',
                 dropdown_menu_id: 'dropdownMenu-financials',
                 label: 'All Financials',
-                collection: Category.financial_categories.for_hacks,
+                collection: Category.financial_categories.for_super_hacks,
                 filter_name: 'q[with_financial_ids][]',
                 field_prefix: 'financial',
                 selected_items: params.dig(:q, :with_financial_ids)
@@ -141,7 +113,7 @@
                 dropdown_button_id: 'dropdownButton-knowledge',
                 dropdown_menu_id: 'dropdownMenu-knowledge',
                 label: 'All Knowledge',
-                collection: Category.knowledge_categories.for_hacks,
+                collection: Category.knowledge_categories.for_super_hacks,
                 filter_name: 'q[with_knowledge_ids][]',
                 field_prefix: 'knowledge',
                 selected_items: params.dig(:q, :with_knowledge_ids)
@@ -230,7 +202,7 @@
               <%= t("helpers.page.showing") %> <span class="font-semibold text-gray-900 dark:text-white"><%= "#{@pagy.from}-#{@pagy.to}" %></span> <%= t("helpers.page.of") %> <span class="font-semibold text-gray-900 dark:text-white"><%= @pagy.count %></span></span>
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8 list-none">
           <li>
-            <%= link_to t("helpers.page.previous"), hacks_path(params.to_unsafe_h.merge(page: @pagy.prev)),
+            <%= link_to t("helpers.page.previous"), superhacks_path(params.to_unsafe_h.merge(page: @pagy.prev)),
                         {
                           disabled: @pagy.prev.blank?,
                           class: "flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -239,7 +211,7 @@
           <% @pagy.series.each do |page| %>
             <li>
               <% if page.is_a?(Integer) %>
-                <%= link_to page.to_s, hacks_path(params.to_unsafe_h.merge(page: page)),
+                <%= link_to page.to_s, superhacks_path(params.to_unsafe_h.merge(page: page)),
                             class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" %>
               <% else %>
                 <span class="flex items-center justify-center px-3 h-8 text-gray-500">...</span>
@@ -247,7 +219,7 @@
             </li>
           <% end %>
           <li>
-            <%= link_to t("helpers.page.next"), hacks_path(params.to_unsafe_h.merge(page: @pagy.next)),
+            <%= link_to t("helpers.page.next"), superhacks_path(params.to_unsafe_h.merge(page: @pagy.next)),
                         {
                           disabled: @pagy.next.blank?,
                           class: "flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -264,12 +236,6 @@
       <tr>
         <th scope="col" class="px-6 py-3 w-96">
           Title
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          Type
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          Scale
         </th>
         <th scope="col" class="px-0 py-3 text-center">
           Popularity
@@ -298,24 +264,13 @@
       </tr>
       </thead>
       <tbody>
-      <% @hacks.each do |hack|%>
+      <% @superhacks.each do |hack|%>
         <tr class="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-            onclick="window.location='<%= hack_path(id: hack) %>'">
+            onclick="window.location='<%= superhack_path(id: hack) %>'">
           <td class="flex flex-col w-full text-left text-gray-900 dark:text-white px-2 w-96">
             <div class="ps-4 px-0">
-              <div class="text-base font-semibold mb-2"><%= hack.init_title %></div>
-              <div class="font-normal text-gray-500 line-clamp-2"><%= hack.summary %></div>
-            </div>
-          </td>
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.is_advice? ? "Advice" : "Hack" %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.scale_categories.map(&:name).to_sentence %></span>
+              <div class="text-base font-semibold mb-2"><%= hack.title %></div>
+              <div class="font-normal text-gray-500 line-clamp-2"><%= hack.description %></div>
             </div>
           </td>
 

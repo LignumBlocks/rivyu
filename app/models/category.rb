@@ -5,19 +5,42 @@ class Category < ApplicationRecord
   has_many :superhack_categories
   has_many :superhacks, through: :superhack_categories
 
-  scope :popularity_categories, -> { where(classification_id: Classification.find_by_name('Popularity').id) }
-  scope :financial_topic_categories, lambda {
-    where(classification_id: Classification.find_by_name('Specific Financial Topic').id)
+  scope :for_hacks, -> { where(for_super_hacks: false) }
+  scope :for_super_hacks, -> { where(for_super_hacks: true) }
+
+  scope :popularity_categories, -> {
+    where(classification_id: Classification.where(name: 'Popularity').pluck(:id))
   }
-  scope :audience_categories, -> { where(classification_id: Classification.find_by_name('Audience and Life Stage').id) }
-  scope :horizon_categories, -> { where(classification_id: Classification.find_by_name('Time Horizon').id) }
-  scope :risk_categories, -> { where(classification_id: Classification.find_by_name('Risk Level').id) }
-  scope :implementation_categories, lambda {
-    where(classification_id: Classification.find_by_name('Implementation Difficulty').id)
+
+  scope :financial_topic_categories, -> {
+    where(classification_id: Classification.where(name: 'Specific Financial Topic').pluck(:id))
   }
-  scope :financial_categories, -> { where(classification_id: Classification.find_by_name('Financial Goals').id) }
-  scope :knowledge_categories, lambda {
-    where(classification_id: Classification.find_by_name('Knowledge Level Required').id)
+
+  scope :audience_categories, -> {
+    where(classification_id: Classification.where(name: 'Audience and Life Stage').pluck(:id))
   }
-  scope :scale_categories, -> { where(classification_id: Classification.find_by_name('Complexity Scale').id) }
+
+  scope :horizon_categories, -> {
+    where(classification_id: Classification.where(name: 'Time Horizon').pluck(:id))
+  }
+
+  scope :risk_categories, -> {
+    where(classification_id: Classification.where(name: 'Risk Level').pluck(:id))
+  }
+
+  scope :implementation_categories, -> {
+    where(classification_id: Classification.where(name: 'Implementation Difficulty').pluck(:id))
+  }
+
+  scope :financial_categories, -> {
+    where(classification_id: Classification.where(name: 'Financial Goals').pluck(:id))
+  }
+
+  scope :knowledge_categories, -> {
+    where(classification_id: Classification.where(name: 'Knowledge Level Required').pluck(:id))
+  }
+
+  scope :scale_categories, -> {
+    where(classification_id: Classification.where(name: 'Complexity Scale').pluck(:id))
+  }
 end

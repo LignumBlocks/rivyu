@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :sources
   resources :articles
+  resources :superhacks
 
   resources :hacks, only: [:index]
   resource :hack, only: [:show] do
