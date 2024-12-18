@@ -4,7 +4,7 @@
 
   <% if hack.is_advice? %>
     <p class="font-bold mt-4">Advice Justification</p>
-    <p><%= raw(@markdown.render(hack.advice_justification)) if hack.advice_justification %></p>
+    <p class="ml-4"><%= raw(@markdown.render(hack.advice_justification)) if hack.advice_justification %></p>
   <% end %>
 
   <p class="font-bold mt-4">Init Title</p>
@@ -57,7 +57,7 @@
   <p><%= raw(@markdown.render(@hack.main_goal)) %></p>
 
   <p class="font-bold mt-4">Steps Summary</p>
-  <p><%= raw(@markdown.render(@hack.steps_summary)) %></p>
+  <p class="ml-4"><%= raw(@markdown.render(@hack.steps_summary)) %></p>
 
   <p class="font-bold mt-4">Resources Needed</p>
   <p><%= raw(@markdown.render(@hack.resources_needed)) %></p>
