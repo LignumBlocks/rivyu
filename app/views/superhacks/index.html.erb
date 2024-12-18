@@ -157,28 +157,10 @@
           Title
         </th>
         <th scope="col" class="px-0 py-3 text-center">
-          Popularity
+          Target User Profile
         </th>
         <th scope="col" class="px-0 py-3 text-center">
-          F. Topic
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          audience
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          horizon
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          risk
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          implementation
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          financial
-        </th>
-        <th scope="col" class="px-0 py-3 text-center">
-          knowledge
+          Goals
         </th>
       </tr>
       </thead>
@@ -195,49 +177,13 @@
 
           <td class="px-0 py-2 text-center ">
             <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.popularity_categories.map(&:name).to_sentence %></span>
+              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.targets_categories.for_super_hacks.map(&:name).to_sentence %></span>
             </div>
           </td>
 
           <td class="px-0 py-2 text-center">
             <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.financial_topic_categories.map(&:name).to_sentence %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.audience_categories.map(&:name).to_sentence %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.horizon_categories.map(&:name).to_sentence %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <a href="http://"></a>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.implementation_categories.map(&:name).to_sentence %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.financial_categories.map(&:name).to_sentence %></span>
-            </div>
-          </td>
-
-          <td class="px-0 py-2 text-center ">
-            <div class="inline-flex">
-              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.knowledge_categories.map(&:name).to_sentence %></span>
+              <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= hack.categories.goals_categories.for_super_hacks.map(&:name).to_sentence %></span>
             </div>
           </td>
         </tr>      
