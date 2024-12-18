@@ -4,7 +4,7 @@
 
   <% if hack.is_advice? %>
     <p class="font-bold mt-4">Advice Justification</p>
-    <p><%= hack.advice_justification %></p>
+    <p><%= raw(@markdown.render(hack.advice_justification)) if hack.advice_justification %></p>
   <% end %>
 
   <p class="font-bold mt-4">Init Title</p>
