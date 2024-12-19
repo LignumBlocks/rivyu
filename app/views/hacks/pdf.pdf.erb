@@ -235,104 +235,70 @@
   </style>
 </head>
 <body onload="number_pages()">
-<div class="p-6 pt-4">
-  <p class="font-bold">Title</p>
+<div class="p-6 pt-4 w-3/4">
+  <p class="font-bold">Type: <span class="bg-gray-100 text-gray-800 text-xs font-medium border border-gray-300 me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"> <%= @hack.is_advice? ? "Advice" : "Hack" %></span>
+  </p>
+
+  <% if @hack.is_advice? %>
+    <p class="font-bold mt-4">Advice Justification</p>
+    <p class="ml-4"><%= raw(@markdown.render(@hack.advice_justification)) if @hack.advice_justification %></p>
+  <% end %>
+
+  <p class="font-bold mt-4">Init Title</p>
+  <p><%= @hack.init_title %></p>
+
+  <p class="font-bold mt-4">Free Title</p>
+  <p><%= @hack.free_title %></p>
+
+  <p class="font-bold mt-4">Extended Title</p>
   <p>
-    <span><%= @hack.premium_title %>
-      <span class="<%= class_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %> inline-block ml-2"><%= text_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %></span>
-    </span>
+    <span><%= @hack.premium_title %></span>
   </p>
 
   <p class="font-bold mt-4">Summary</p>
-  <p><%= raw(@markdown.render(@hack.summary)) if @hack.summary%></p>
+  <p><%= raw(@markdown.render(@hack.summary)) if @hack.summary %></p>
 
   <p class="font-bold mt-4">Justification</p>
   <p><%= raw(@markdown.render(@hack.justification)) if @hack.justification %></p>
 
-  <p class="font-bold mt-4">Video Transcription</p>
-  <p><%= raw(@markdown.render(@hack.video.transcription.content)) %></p>
-  <a href="<%= @hack.video.source_link %>" target="_blank" class="text-blue-600 dark:text-blue-500 hover:underline">Ver video</a>
+  <p class="font-bold mt-4">Description</p>
+  <p class=""><%= raw(@markdown.render(@hack.description)) %></p>
 
-  <% if @hack.is_hack? %>
-    <p class="font-bold mt-4">Queries</p>
-    <ul class="pl-4">
-      <% @hack.queries.each do |query| %>
-        <li><%= query.content.capitalize %></li>
-      <% end %>
-    </ul>
+  <p class="font-bold mt-4">Categories</p>
+  <p><ul class="list-disc list-outside pl-5">
+  <% @hack.hack_categories.each do |hack_category| %>
+    <li class="">
+      <div class="inline-flex">
+        <h4 class="font-bold"><%= "#{hack_category.category.classification.name}:#{hack_category.category.name}" %></h4>
+        <p><%= hack_category.justification %></p>
+
+      </div>
+    </li>
   <% end %>
+</ul></p>
+
+  <p class="font-bold mt-4">Main goal</p>
+  <p><%= raw(@markdown.render(@hack.main_goal)) %></p>
+
+  <p class="font-bold mt-4">Steps Summary</p>
+  <p class="ml-4"><%= raw(@markdown.render(@hack.steps_summary)) %></p>
+
+  <p class="font-bold mt-4">Resources Needed</p>
+  <p><%= raw(@markdown.render(@hack.resources_needed)) %></p>
+
+  <p class="font-bold mt-4">Expected Benefits</p>
+  <p><%= raw(@markdown.render(@hack.expected_benefits)) %></p>
+
+  <p class="font-bold mt-4">Detailed Steps</p>
+  <p><%= raw(@markdown.render(@hack.detailed_steps)) %></p>
+
+  <p class="font-bold mt-4">Additional tools resources</p>
+  <p><%= raw(@markdown.render(@hack.additional_tools_resources)) %></p>
+
+  <p class="font-bold mt-4">Case Study</p>
+  <p><%= raw(@markdown.render(@hack.case_study)) %></p>
+
+  <a href="<%= article_path(id: @hack.article) %>" class="text-blue-600 dark:text-blue-500 hover:underline">Ver Article</a>
 </div>
-
-<% if @hack.hack_structured_info %>
-  <div class="p-6 pt-2">
-    <p class="font-bold">Extended Title</p>
-    <p>
-      <span><%= @hack.hack_structured_info.extended_title %>
-        <span class="<%= class_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %> inline-block ml-2"><%= text_for_boolean(@hack.hack_validation.present? ? @hack.hack_validation.status : @hack.is_hack?) %></span>
-      </span>
-    </p>
-
-    <p class="font-bold mt-4">Description</p>
-    <p class=""><%= raw(@markdown.render(@hack.hack_structured_info.description)) %></p>
-
-    <p class="font-bold mt-4">Analysis</p>
-    <p class=""><%= raw(@markdown.render(@hack.hack_validation.analysis)) if @hack.hack_validation %></p>
-
-    <p class="font-bold mt-4">Categories</p>
-    <p><ul class="list-disc list-outside pl-5">
-    <% @hack.hack_category_rels.each do |hack_category_rels| %>
-      <li class="mb-2">
-        <div class="inline-flex">
-          <span class="font-bold"><%= hack_category_rels.category.name %>: </span>
-          <span><%= hack_category_rels.justification %></span>
-        </div>
-      </li>
-    <% end %>
-  </ul></p>
-
-    <p class="font-bold mt-4">Main goal</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.main_goal)) %></p>
-
-    <p class="font-bold mt-4">Steps Summary</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.steps_summary)) %></p>
-
-    <p class="font-bold mt-4">Resources Needed</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.resources_needed)) %></p>
-
-    <p class="font-bold mt-4">Expected Benefits</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.expected_benefits)) %></p>
-
-    <p class="font-bold mt-4">Detailed Steps</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.detailed_steps)) %></p>
-
-    <p class="font-bold mt-4">Additional tools resources</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.additional_tools_resources)) %></p>
-
-    <p class="font-bold mt-4">Case Study</p>
-    <p><%= raw(@markdown.render(@hack.hack_structured_info.case_study)) %></p>
-
-    <p class="font-bold mt-4">Validation Sources</p>
-    <ul class="pl-4">
-      <% validation_links = @hack.hack_validation&.links%>
-      <% validation_links ||= "[]" %>
-      <% validation_links = JSON.parse(validation_links) %>
-      <% validation_links.each do |link| %>
-        <li>
-          <a href="<%= link %>" target="_blank" class=" dark:text-blue-500 hover:underline"><%= link %></a>
-        </li>
-      <% end %>
-    </ul>
-
-    <p class="font-bold mt-4">Scraped Sources</p>
-    <ul class="pl-4">
-      <% @hack.scraped_results.each do |scraped_result| %>
-        <li>
-          <a href="<%= scraped_result.link %>" target="_blank" class=" dark:text-blue-500 hover:underline"><%= scraped_result.link %></a>
-        </li>
-      <% end %>
-    </ul>
-
-  </div>
-<% end %>
 </body>
 </html>
