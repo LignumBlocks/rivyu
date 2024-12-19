@@ -18,11 +18,11 @@ class SuperhacksController < ApplicationController
   def combined_filters
     combined_filter_ids = [
       params.dig(:q, :with_target_ids),
-      params.dig(:q, :with_goals_ids)
+      params.dig(:q, :with_goal_ids)
     ].compact.flatten.uniq
 
     {
-      hack_categories_category_id_in: combined_filter_ids
+      superhack_categories_category_id_in: combined_filter_ids
     }
   end
 end
