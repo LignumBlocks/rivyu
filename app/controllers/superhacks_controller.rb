@@ -20,7 +20,7 @@ class SuperhacksController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "superack_#{@superhack.id}",
+        render pdf: "superhack_#{@superhack.id}",
                template: 'superhacks/pdf'
       end
     end

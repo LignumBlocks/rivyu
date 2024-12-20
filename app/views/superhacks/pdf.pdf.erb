@@ -242,15 +242,6 @@
   <p class="font-bold mt-4">Description</p>
   <p class=""><%= raw(@markdown.render(@superhack.description)) %></p>
 
-  <p class="font-bold mt-4">Implementation steps</p>
-  <p><%= raw(@markdown.render(@superhack.implementation_steps)) %></p>
-
-  <p class="font-bold mt-4">Expected Results</p>
-  <p><%= raw(@markdown.render(@superhack.expected_results)) %></p>
-
-  <p class="font-bold mt-4">Risks and mitigation</p>
-  <p><%= raw(@markdown.render(@superhack.risks_and_mitigation)) %></p>
-
   <p class="font-bold mt-4">Categories</p>
   <p><ul class="list-disc list-outside pl-5">
   <% @superhack.superhack_categories.each do |hack_category| %>
@@ -263,6 +254,15 @@
     </li>
   <% end %>
 </ul></p>
+
+  <p class="font-bold mt-4">Implementation steps</p>
+  <p><%= raw(@markdown.render(@superhack.implementation_steps)) %></p>
+
+  <p class="font-bold mt-4">Expected Results</p>
+  <p><%= raw(@markdown.render(@superhack.expected_results)) %></p>
+
+  <p class="font-bold mt-4">Risks and mitigation</p>
+  <p><%= raw(@markdown.render(@superhack.risks_and_mitigation)) %></p>
 </div>
 </body>
 </html>
