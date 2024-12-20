@@ -28,3 +28,41 @@
 
 </div>
 
+<script>
+    function copyHackToClipboard() {
+        let textToCopy = "Init Title\n";
+        textToCopy += "<%= j @hack.init_title %>\n\n";
+        textToCopy = "Free Title\n";
+        textToCopy += "<%= j @hack.free_title %>\n\n";
+        textToCopy = "Premium Title\n";
+        textToCopy += "<%= j @hack.premium_title %>\n\n";
+        textToCopy += "Summary\n";
+        textToCopy += "<%= j @hack.summary if @hack.summary %>\n\n";
+        textToCopy += "Justification\n";
+        textToCopy += "<%= j @hack.justification if @hack.justification %>\n\n";
+        textToCopy += "Main goal\n";
+        textToCopy += "<%= j @hack&.main_goal %>\n\n";
+        textToCopy += "Steps Summary\n";
+        textToCopy += "<%= j @hack&.steps_summary %>\n\n";
+        textToCopy += "Resources Needed\n";
+        textToCopy += "<%= j @hack&.resources_needed %>\n\n";
+        textToCopy += "Expected Benefits\n";
+        textToCopy += "<%= j @hack&.expected_benefits %>\n\n";
+        textToCopy += "Detailed Steps\n";
+        textToCopy += "<%= j @hack&.detailed_steps %>\n\n";
+        textToCopy += "Detailed Steps\n";
+        textToCopy += "<%= j @hack&.detailed_steps %>\n\n";
+        textToCopy += "Additional tools sources\n";
+        textToCopy += "<%= j @hack&.additional_tools_resources %>\n\n";
+        textToCopy += "Case Study\n";
+        textToCopy += "<%= j @hack&.case_study %>";
+
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                // alert("Información copiada al portapapeles.");
+            })
+            .catch(err => {
+                console.error("Error al copiar al portapapeles: ", err);
+            });
+    }
+</script>
