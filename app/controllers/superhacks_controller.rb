@@ -13,6 +13,19 @@ class SuperhacksController < ApplicationController
     @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
   end
 
+  def download_pdf
+    @superhack = Superhack.find(params[:id])
+    @markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "superack_#{@superhack.id}",
+               template: 'superhacks/pdf'
+      end
+    end
+  end
+
   private
 
   def combined_filters

@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   resources :sources
   resources :articles
   resources :superhacks
+  resource :superhack, only: [:show] do
+    member do
+      get :download_pdf
+    end
+  end
 
   resources :hacks, only: [:index]
   resource :hack, only: [:show] do
