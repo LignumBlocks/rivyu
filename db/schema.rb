@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_06_083023) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_17_111928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,12 +62,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_06_083023) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "for_super_hacks", default: false
     t.index ["classification_id", "name"], name: "index_categories_on_classification_id_and_name"
     t.index ["classification_id"], name: "index_categories_on_classification_id"
   end
 
   create_table "classifications", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "combined_hacks", force: :cascade do |t|
+    t.json "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
